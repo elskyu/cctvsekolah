@@ -18,6 +18,7 @@
     <!-- End plugin css for this page -->
     <!-- inject:css -->
     <link rel="stylesheet" href="{{ asset('skydash/css/vertical-layout-light/style.css') }}">
+    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css">
     <!-- endinject -->
     <link rel="shortcut icon" href="{{ asset('skydash/images/favicon.png') }}" />
 </head>
