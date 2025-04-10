@@ -16,7 +16,7 @@ class sekolahController extends Controller
     public function index()
     {
         $sekolah = sekolah::all();
-        return view('sekolah.index', compact('sekolah'));
+        return view('admin.sekolah', compact('sekolah'));
     }
 
     public function create()
