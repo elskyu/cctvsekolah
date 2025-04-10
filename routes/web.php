@@ -3,8 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\sekolahController;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/uji', function () {
+    return view('admin.dashboard');
 });
 
 // Route sekolah
