@@ -9,7 +9,8 @@ Route::get('/dashboard', function () {
 
 // Route sekolah
 Route::get('/', [sekolahController::class, 'dashboard'])->name('sekolah.sekolah');
-Route::get('/index', [sekolahController::class, 'index'])->name('sekolah.index');
+
+Route::get('/cctv-sekolah', [sekolahController::class, 'index'])->name('sekolah.index');
 Route::get('/create', [sekolahController::class, 'create'])->name('sekolah.create');
 Route::post('/sekolah', [sekolahController::class, 'store'])->name('sekolah.store');
 Route::get('editSekolah/{sekolah}', [sekolahController::class, 'edit'])->name('sekolah.edit');
