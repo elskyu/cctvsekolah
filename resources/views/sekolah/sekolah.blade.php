@@ -3,24 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-
     <title>Dashboard CCTV</title>
     <script>
-
-        function removeCCTVFromHash(id) {
-            const currentHash = window.location.hash.replace('#', '');
-            const cctvList = currentHash ? decodeHash(currentHash).split(',') : [];
-            const updatedList = cctvList.filter(cctv => cctv !== id);
-            window.location.hash = encodeHash(updatedList.join(',')); // Update URL hash dengan hash yang di-encode
-        }
-
         function toggleDaerah(id) {
             const daerahList = document.getElementById(id);
             daerahList.style.display = (daerahList.style.display === "none" || daerahList.style.display === "") ? "block" : "none";
@@ -37,6 +27,9 @@
                 cctvContainer.style.display = "none";
                 iframe.src = "";
             }
+
+            // Simpan status ke localStorage
+            localStorage.setItem(checkbox.id, checkbox.checked);
         }
 
         function toggleIcon(event, namaSekolah) {
@@ -166,37 +159,44 @@
             });
         });
 
+        // Fungsi untuk menyembunyikan semua CCTV
         function hideAllCCTV() {
-            const cctvElements = document.querySelectorAll('.cctv-view');
-            cctvElements.forEach(element => {
-                const iframe = element.querySelector("iframe");
-                if (iframe) {
-                    iframe.src = ""; // Hentikan streaming
-                }
+            // Hentikan semua streaming dan sembunyikan CCTV
+            document.querySelectorAll('.cctv-view').forEach(element => {
+                const iframe = element.querySelector('iframe');
+                if (iframe) iframe.src = "";
                 element.style.display = 'none';
             });
 
-            // Reset ikon mata
+            // Reset UI
             document.querySelectorAll('.icon-toggle.fa-eye-slash').forEach(icon => {
                 icon.classList.replace('fa-eye-slash', 'fa-eye');
             });
 
-            // Uncheck semua checkbox
+            // Reset semua checkbox dan hapus statusnya dari localStorage
             document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
                 checkbox.checked = false;
+                localStorage.removeItem(checkbox.id); // Hapus status per checkbox
             });
 
-            // Reset dropdown sekolah
+            // Reset dropdown
             const dropdown = document.getElementById("school-dropdown");
             if (dropdown) dropdown.value = "";
 
-            // Hapus semua data dari localStorage
+            // Hapus SEMUA data terkait CCTV dari localStorage
             localStorage.removeItem("activeSchools");
             localStorage.removeItem("activeCCTVs");
             localStorage.removeItem("selectedSchool");
 
-            // Hapus hash dari URL
+            // Hapus hash URL
             window.location.hash = "";
+        }
+
+        function removeCCTVFromHash(id) {
+            const currentHash = window.location.hash.replace('#', '');
+            const cctvList = currentHash ? decodeHash(currentHash).split(',') : [];
+            const updatedList = cctvList.filter(cctv => cctv !== id);
+            window.location.hash = encodeHash(updatedList.join(',')); // Update URL hash dengan hash yang di-encode
         }
 
         // Ambil pilihan terakhir dari localStorage saat halaman dimuat
@@ -204,7 +204,17 @@
             loadActiveSchoolsFromLocalStorage();
             updateStatistics();
 
-            // Ambil daftar CCTV dari hash
+            // 1. Pulihkan status checkbox dari localStorage
+            document.querySelectorAll('input[type="checkbox"][id^="checkbox-"]').forEach(checkbox => {
+                const savedState = localStorage.getItem(checkbox.id);
+                if (savedState !== null) {
+                    checkbox.checked = savedState === 'true';
+                    const containerId = checkbox.id.replace('checkbox-', '');
+                    toggleCCTV(containerId, checkbox);
+                }
+            });
+
+            // 2. Ambil daftar CCTV dari hash (prioritas lebih tinggi dari localStorage)
             const activeCCTVs = getActiveCCTVsFromHash();
             activeCCTVs.forEach(id => {
                 const checkbox = document.getElementById(`checkbox-${id}`);
@@ -214,7 +224,7 @@
                 }
             });
 
-            // Restore dropdown sekolah
+            // 3. Restore dropdown sekolah
             const selectedSchool = localStorage.getItem("selectedSchool");
             if (selectedSchool) {
                 document.getElementById("school-dropdown").value = selectedSchool;
@@ -222,9 +232,9 @@
             }
         });
 
+
         function loadActiveSchoolsFromLocalStorage() {
             const activeSchools = JSON.parse(localStorage.getItem("activeSchools")) || [];
-
             setTimeout(() => {
                 activeSchools.forEach(namaSekolah => {
                     const cctvToShow = document.querySelectorAll(`.cctv-view[data-sekolah="${namaSekolah}"]`);
