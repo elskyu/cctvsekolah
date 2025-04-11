@@ -16,7 +16,7 @@ class ApiSekolahController extends Controller
     public function index()
     {
         try {
-            $sekolah = Sekolah::latest()->paginate(5);
+            $sekolah = Sekolah::all();
     
             if ($sekolah->isEmpty()) {
                 return new GlobalResource(false, 'Data Sekolah tidak ditemukan', null);
