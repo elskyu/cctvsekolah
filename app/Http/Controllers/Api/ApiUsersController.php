@@ -16,7 +16,7 @@ class ApiUsersController extends Controller
     public function index()
     {
         try {
-            $users = User::latest()->paginate(5);
+            $users = User::all();
     
             if ($users->isEmpty()) {
                 return new GlobalResource(false, 'Data Users tidak ditemukan', null);

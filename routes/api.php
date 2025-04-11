@@ -11,19 +11,30 @@ use App\Http\Controllers\Api\ApiPanoramaController;
 Route::post('/login', [ApiAuthController::class, 'login']);
 
 // API CCTV SEKOLAH (GUEST)
+<<<<<<< Updated upstream
 // Route::get('/cctv-sekolah', [ApiSekolahController::class, 'index']);
 // Route::get('/cctv-sekolah/{id}', [ApiSekolahController::class, 'show']);
 
 // API CCTV PANORAMA (GUEST)
 // Route::get('/cctv-panorama', [ApiPanoramaController::class, 'index']);
 // Route::get('/cctv-panorama/{id}', [ApiPanoramaController::class, 'show']);
+=======
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::get('/cctv-sekolah/{id}', [ApiSekolahController::class, 'show']);
+>>>>>>> Stashed changes
+
+Route::middleware('token.auth')->group(function () {
+
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard');
+    })->name('dashboard');
 
     // USER INFO
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
+
+    Route::get('/cctv-sekolah', [ApiSekolahController::class, 'index']);
 
     // LOGOUT
     Route::post('/logout', [ApiAuthController::class, 'logout']);

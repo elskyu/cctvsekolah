@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\GlobalResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class ApiAuthController extends Controller
 {
@@ -15,6 +17,7 @@ class ApiAuthController extends Controller
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
+
 
         if (!Auth::attempt($credentials)) {
             return response()->json(['message' => 'Login gagal'], 401);
@@ -35,9 +38,7 @@ class ApiAuthController extends Controller
     {
         $request->user()->currentAccessToken()->delete();
 
-        return response()->json([
-            'message' => 'Logout berhasil'
-        ]);
+        return new GlobalResource(true, 'Logout berhasil', null);
     }
 }
 
