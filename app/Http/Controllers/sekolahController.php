@@ -18,4 +18,9 @@ class sekolahController extends Controller
         return view('admin.sekolah');
     }
 
+    public function login()
+    {
+        return view('auth.login');
+    }
+
 }

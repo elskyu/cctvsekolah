@@ -1,3 +1,10 @@
+const token = localStorage.getItem('token');
+
+if (!token) {
+    // Redirect ke halaman login kalau token tidak ada
+    window.location.href = '/login'; 
+}
+
 // Modal: Tambah Data
 function openCreateModal() {
     $('#formSekolah')[0].reset(); // kosongkan form
@@ -22,6 +29,7 @@ function openEditModal(item) {
 function loadSekolahData() {
     fetch('/api/cctv-sekolah', {
         headers: {
+            'Authorization': 'Bearer ' + token,
             'Accept': 'application/json'
         }
     })
@@ -123,6 +131,7 @@ $(document).ready(function () {
             url: url,
             type: method,
             headers: {
+                'Authorization': 'Bearer ' + token,
                 'X-CSRF-TOKEN': csrfToken,
                 'Accept': 'application/json',
             },
@@ -165,6 +174,7 @@ function deleteSekolah(id) {
                 url: `/api/cctv-sekolah/${id}`,
                 type: 'DELETE',
                 headers: {
+                    'Authorization': 'Bearer ' + token,
                     'X-CSRF-TOKEN': csrfToken,
                     'Accept': 'application/json',
                 },
