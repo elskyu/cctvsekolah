@@ -46,7 +46,7 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::apiResource('/users', ApiUsersController::class);
 
 // API CCTV SEKOLAH
-Route::apiResource('/cctv-sekolah', ApiUsersController::class);
+Route::apiResource('/cctv-sekolah', ApiSekolahController::class);
 
 // API CCTV PANORAMA
-Route::apiResource('/cctv-panorama', ApiUsersController::class);
+Route::apiResource('/cctv-panorama', ApiPanoramaController::class);
