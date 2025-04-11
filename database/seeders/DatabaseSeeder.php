@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             SekolahSeeder::class,
             UserSeeder::class,
             CCTVSSeeder::class,
+            PanoramaSeeder::class,
         ]);
     }
 }
