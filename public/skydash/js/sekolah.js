@@ -65,7 +65,7 @@ function renderTablePage(page) {
             <td>${item.namaSekolah}</td>
             <td>${item.namaTitik}</td>
             <td>
-                <div class="d-flex gap-2">
+                <div style="display: flex; gap: 5px;">
                     <button class="btn btn-sm btn-primary" onclick='openEditModal(${JSON.stringify(item)})'>Edit</button>
                     <button class="btn btn-sm btn-danger" onclick="deleteSekolah(${item.id})">Delete</button>
                 </div>
@@ -95,7 +95,6 @@ function goToPage(page) {
     currentPage = page;
     renderTablePage(currentPage);
 }
-
 
 $(document).ready(function () {
     loadSekolahData();
@@ -147,7 +146,7 @@ $(document).ready(function () {
                     Swal.fire('Sukses', response.message, 'success').then(() => {
                         $('#modalForm').modal('hide');
                         loadSekolahData();
-                    });                    
+                    });
                 } else {
                     Swal.fire('Gagal', response.message, 'error');
                 }
@@ -182,7 +181,7 @@ function deleteSekolah(id) {
                     if (response.success) {
                         Swal.fire('Berhasil', response.message, 'success').then(() => {
                             loadSekolahData();
-                        });                        
+                        });
                     } else {
                         Swal.fire('Gagal', response.message, 'error');
                     }
@@ -199,7 +198,7 @@ function deleteSekolah(id) {
 // Fitur Live Search
 $('#search').on('keyup', function () {
     const searchText = $(this).val().toLowerCase();
-    
+
     const filtered = sekolahData.filter(item =>
         item.namaWilayah.toLowerCase().includes(searchText) ||
         item.namaSekolah.toLowerCase().includes(searchText) ||
@@ -225,7 +224,7 @@ function renderFilteredTable(filteredData) {
             <td>${item.namaSekolah}</td>
             <td>${item.namaTitik}</td>
             <td>
-                <div class="d-flex gap-2">
+                <div class="d-flex">
                     <button class="btn btn-sm btn-primary" onclick='openEditModal(${JSON.stringify(item)})'>Edit</button>
                     <button class="btn btn-sm btn-danger" onclick="deleteSekolah(${item.id})">Delete</button>
                 </div>
@@ -233,7 +232,6 @@ function renderFilteredTable(filteredData) {
         `;
         tbody.appendChild(row);
     });
-
     renderFilteredPagination(filteredData);
 }
 
