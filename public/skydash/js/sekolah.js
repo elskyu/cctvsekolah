@@ -1,4 +1,4 @@
-const token = localStorage.getItem('token');
+const token = Cookies.get('token');
 
 if (!token) {
     // Redirect ke halaman login kalau token tidak ada

@@ -11,14 +11,18 @@ use App\Http\Controllers\Api\ApiPanoramaController;
 Route::post('/login', [ApiAuthController::class, 'login']);
 
 // API CCTV SEKOLAH (GUEST)
-// Route::get('/cctv-sekolah', [ApiSekolahController::class, 'index']);
-// Route::get('/cctv-sekolah/{id}', [ApiSekolahController::class, 'show']);
+Route::get('/cctv-sekolah', [ApiSekolahController::class, 'index']);
+Route::get('/cctv-sekolah/{id}', [ApiSekolahController::class, 'show']);
 
 // API CCTV PANORAMA (GUEST)
-// Route::get('/cctv-panorama', [ApiPanoramaController::class, 'index']);
-// Route::get('/cctv-panorama/{id}', [ApiPanoramaController::class, 'show']);
+Route::get('/cctv-panorama', [ApiPanoramaController::class, 'index']);
+Route::get('/cctv-panorama/{id}', [ApiPanoramaController::class, 'show']);
 
 Route::middleware('token.auth')->group(function () {
+
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard');
+    })->name('dashboard');
 
     Route::get('/dashboard', function () {
         return view('admin.dashboard');
@@ -29,30 +33,28 @@ Route::middleware('token.auth')->group(function () {
         return $request->user();
     });
 
-    Route::get('/cctv-sekolah', [ApiSekolahController::class, 'index']);
-
     // LOGOUT
     Route::post('/logout', [ApiAuthController::class, 'logout']);
 
     // API CCTV SEKOLAH
-    // Route::post('/cctv-sekolah', [ApiSekolahController::class, 'store']);
-    // Route::put('/cctv-sekolah/{id}', [ApiSekolahController::class, 'update']);
-    // Route::delete('/cctv-sekolah/{id}', [ApiSekolahController::class, 'destroy']);
+    Route::post('/cctv-sekolah', [ApiSekolahController::class, 'store']);
+    Route::put('/cctv-sekolah/{id}', [ApiSekolahController::class, 'update']);
+    Route::delete('/cctv-sekolah/{id}', [ApiSekolahController::class, 'destroy']);
 
     // API CCTV PANORAMA
-    // Route::post('/cctv-panorama', [ApiPanoramaController::class, 'store']);
-    // Route::put('/cctv-panorama/{id}', [ApiPanoramaController::class, 'update']);
-    // Route::delete('/cctv-panorama/{id}', [ApiPanoramaController::class, 'destroy']);
+    Route::post('/cctv-panorama', [ApiPanoramaController::class, 'store']);
+    Route::put('/cctv-panorama/{id}', [ApiPanoramaController::class, 'update']);
+    Route::delete('/cctv-panorama/{id}', [ApiPanoramaController::class, 'destroy']);
 
     // API USERS
-    // Route::apiResource('/users', ApiUsersController::class);
+    Route::apiResource('/users', ApiUsersController::class);
 });
 
 // API USERS
-Route::apiResource('/users', ApiUsersController::class);
+// Route::apiResource('/users', ApiUsersController::class);
 
 // API CCTV SEKOLAH
-Route::apiResource('/cctv-sekolah', ApiSekolahController::class);
+// Route::apiResource('/cctv-sekolah', ApiSekolahController::class);
 
 // API CCTV PANORAMA
-Route::apiResource('/cctv-panorama', ApiPanoramaController::class);
+// Route::apiResource('/cctv-panorama', ApiPanoramaController::class);

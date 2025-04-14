@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="{{ asset('skydash/css/vertical-layout-light/style.css') }}">
     <!-- endinject -->
     <link rel="shortcut icon" href="{{ asset('skydash/images/favicon.png') }}" />
+    <!-- js-cookie library -->
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
 </head>
 
 <body>
@@ -55,8 +57,6 @@
     <!-- plugins:js -->
     <script src="{{ asset('skydash/vendors/js/vendor.bundle.base.js') }}"></script>
     <!-- endinject -->
-    <!-- Plugin js for this page -->
-    <!-- End plugin js for this page -->
     <!-- inject:js -->
     <script src="{{ asset('skydash/js/off-canvas.js') }}"></script>
     <script src="{{ asset('skydash/js/hoverable-collapse.js') }}"></script>
@@ -89,9 +89,9 @@
                 const data = await response.json();
 
                 if (response.ok) {
-                    // Simpan token di localStorage (jika dibutuhkan untuk API selanjutnya)
-                    localStorage.setItem('token', data.access_token);
-                    localStorage.setItem('user', JSON.stringify(data.user));
+                    // Simpan token di cookie
+                    Cookies.set('token', data.access_token, { expires: 7, secure: true, sameSite: 'Strict' });
+                    Cookies.set('user', JSON.stringify(data.user), { expires: 7, secure: true, sameSite: 'Strict' });
 
                     // SweetAlert sukses login
                     Swal.fire({
@@ -101,6 +101,7 @@
                         timer: 1500,
                         showConfirmButton: false
                     });
+
                     // Redirect ke dashboard
                     setTimeout(() => {
                         window.location.href = "{{ route('dashboard') }}";

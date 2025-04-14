@@ -84,15 +84,21 @@
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const user = JSON.parse(localStorage.getItem('user'));
-        if (user && user.name) {
-            document.getElementById('username').textContent = user.name;
+        const user = Cookies.get('user'); 
+        if (user) {
+            const parsedUser = JSON.parse(user);
+            if (parsedUser.name) {
+                document.getElementById('username').textContent = parsedUser.name;
+            } else {
+                document.getElementById('username').textContent = 'Guest';
+            }
         } else {
             document.getElementById('username').textContent = 'Guest';
         }
     });
 </script>
 <!-- Script tambahan cuaca -->
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
 <script src="{{ asset('skydash/js/weather.js') }}"></script>
 @endpush
 

@@ -20,7 +20,7 @@ class ApiAuthController extends Controller
 
 
         if (!Auth::attempt($credentials)) {
-            return response()->json(['message' => 'Login gagal'], 401);
+            return response()->json(['message' => 'Login gagal. Periksa email atau password Anda'], 401);
         }
 
         $user = Auth::user();
