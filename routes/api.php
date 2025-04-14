@@ -18,11 +18,8 @@ Route::get('/cctv-sekolah/{id}', [ApiSekolahController::class, 'show']);
 Route::get('/cctv-panorama', [ApiPanoramaController::class, 'index']);
 Route::get('/cctv-panorama/{id}', [ApiPanoramaController::class, 'show']);
 
+// MIDDLEWARE
 Route::middleware('token.auth')->group(function () {
-
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('dashboard');
 
     Route::get('/dashboard', function () {
         return view('admin.dashboard');
@@ -49,12 +46,3 @@ Route::middleware('token.auth')->group(function () {
     // API USERS
     Route::apiResource('/users', ApiUsersController::class);
 });
-
-// API USERS
-// Route::apiResource('/users', ApiUsersController::class);
-
-// API CCTV SEKOLAH
-// Route::apiResource('/cctv-sekolah', ApiSekolahController::class);
-
-// API CCTV PANORAMA
-// Route::apiResource('/cctv-panorama', ApiPanoramaController::class);
