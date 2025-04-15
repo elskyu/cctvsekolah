@@ -13,21 +13,27 @@ class ApiPanoramaController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function dashboard()
+    {
+        $panorama = panorama::all();
+        return view('panorama.panorama', compact('panorama'));
+    }
+
     public function index()
     {
         try {
             $panorama = Panorama::all();
-    
+
             if ($panorama->isEmpty()) {
                 return new GlobalResource(false, 'Data Panorama tidak ditemukan', null);
             }
-    
+
             return new GlobalResource(true, 'List Data Panorama', $panorama);
         } catch (\Exception $e) {
             return new GlobalResource(false, 'Terjadi kesalahan: ' . $e->getMessage(), null);
         }
     }
-    
+
 
     /**
      * Store a newly created resource in storage.

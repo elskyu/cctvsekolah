@@ -12,9 +12,14 @@
     <title>Dashboard CCTV</title>
     <script>
         function toggleDaerah(id) {
-            const daerahList = document.getElementById(id);
-            daerahList.style.display = (daerahList.style.display === "none" || daerahList.style.display === "") ? "block" :
-                "none";
+            const subMenu = document.getElementById(id);
+            const icon = document.getElementById('icon-' + id); // ID harus match
+
+            const isVisible = subMenu.style.display === 'block';
+
+            subMenu.style.display = isVisible ? 'none' : 'block';
+            icon.classList.toggle('fa-angle-right');
+            icon.classList.toggle('fa-angle-down');
         }
 
         function toggleCCTV(id, checkbox) {
@@ -94,7 +99,7 @@
             }
         }
 
-        window.onload = function() {
+        window.onload = function () {
             const stored = localStorage.getItem("activeCCTVs");
             if (stored) {
                 const cctvList = JSON.parse(stored);
@@ -129,7 +134,7 @@
         }
 
         // Automatically hide sidebar on mobile when clicking outside
-        document.addEventListener('click', function(event) {
+        document.addEventListener('click', function (event) {
             const sidebar = document.querySelector('.side-bar');
             const toggleButton = document.querySelector('.btn-sidebar');
             const btnMobile = document.querySelector('.btn-mobile');
@@ -150,7 +155,7 @@
 
         // Mencegah label memicu fungsi toggleCCTV
         document.querySelectorAll('.form-check-label').forEach(label => {
-            label.addEventListener('click', function(event) {
+            label.addEventListener('click', function (event) {
                 event.preventDefault();
                 const checkbox = document.querySelector('#' + label.getAttribute('for'));
                 checkbox.checked = !checkbox.checked;
@@ -201,7 +206,7 @@
         }
 
         // Ambil pilihan terakhir dari localStorage saat halaman dimuat
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             loadActiveSchoolsFromLocalStorage();
             updateStatistics();
 
@@ -340,19 +345,19 @@
                                 <a href="javascript:void(0);" class="sub-btn"
                                     onclick="toggleDaerah('{{ Str::slug($wilayah) }}')">
                                     <i></i> {{ $wilayah }}
-                                    <i class="fas fa-angle-right dropdown" style="margin-top: 4px;"></i>
+                                    <i id="icon-{{ Str::slug($wilayah) }}" class="fas fa-angle-right dropdown"
+                                        style="margin-top: 4px;"></i>
                                 </a>
                                 <div id="{{ Str::slug($wilayah) }}" class="sub-menu">
                                     @foreach ($sekolahGroup as $namaSekolah => $cctvGroup)
                                         <div class="item">
                                             <a href="javascript:void(0);" class="sub-btn"
                                                 onclick="toggleDaerah('{{ Str::slug($wilayah) . '-' . Str::slug($namaSekolah) }}')">
-                                                <i class="fas fa-eye icon-toggle"
-                                                    style="margin-right: 8px; margin-top: 4px;"
+                                                <i class="fas fa-eye icon-toggle" style="margin-right: 8px; margin-top: 4px;"
                                                     onclick="event.stopPropagation(); toggleIcon(event, '{{ Str::slug($namaSekolah) }}')"></i>
                                                 {{ $namaSekolah }}
-                                                <i class="fas fa-angle-right dropdown"
-                                                    style="font-size: 12px; margin-top: 4px;"></i>
+                                                <i id="icon-{{ Str::slug($wilayah) . '-' . Str::slug($namaSekolah) }}"
+                                                    class="fas fa-angle-right dropdown" style="margin-top: 4px;"></i>
                                             </a>
                                             <div id="{{ Str::slug($wilayah) . '-' . Str::slug($namaSekolah) }}"
                                                 class="sub-menu">
@@ -361,8 +366,7 @@
                                                         style="cursor: pointer;">
                                                         <input
                                                             style="margin-left: -5px; width: 10px; height: 10px; cursor: pointer;"
-                                                            type="checkbox"
-                                                            id="checkbox-{{ Str::slug($sekolah->namaTitik) }}"
+                                                            type="checkbox" id="checkbox-{{ Str::slug($sekolah->namaTitik) }}"
                                                             data-sekolah="{{ Str::slug($namaSekolah) }}"
                                                             onclick="event.stopPropagation(); toggleCCTV('{{ Str::slug($sekolah->namaTitik) }}', this)">
                                                         <span style="font-size: 12px;" class="form-check-label mb-0">
@@ -416,46 +420,41 @@
 
                 <div class="row g-3">
                     @foreach ($groupedCctvs as $wilayah => $sekolahGroup)
-                        @foreach ($sekolahGroup as $namaSekolah => $cctvGroup)
-                            @foreach ($cctvGroup as $cctv)
-                                @php
-                                    // Memeriksa jumlah kata dalam namaTitik
-                                    $kata = explode(' ', $cctv->namaTitik);
-                                    if (count($kata) > 3) {
-                                        // Jika lebih dari 3 kata, singkat dengan mengambil huruf depan setiap kata
-                                        $singkatan = implode(
-                                            '',
-                                            array_map(function ($word) {
-                                                return strtoupper(substr($word, 0, 1));
-                                            }, $kata),
-                                        );
-                                    } else {
-                                        // Jika 3 kata atau kurang, tampilkan namaTitik secara utuh
-                                        $singkatan = $cctv->namaTitik;
-                                    }
-                                @endphp
-                                <div class="col-md-3 col-sm-6 col-xs-12 cctv-view"
-                                    id="{{ Str::slug($cctv->namaTitik) }}"
-                                    data-sekolah="{{ Str::slug($cctv->namaSekolah) }}" style="display: none;">
+                                @foreach ($sekolahGroup as $namaSekolah => $cctvGroup)
+                                            @foreach ($cctvGroup as $cctv)
+                                                        @php
+                                                            // Memeriksa jumlah kata dalam namaTitik
+                                                            $kata = explode(' ', $cctv->namaTitik);
+                                                            if (count($kata) > 3) {
+                                                                // Jika lebih dari 3 kata, singkat dengan mengambil huruf depan setiap kata
+                                                                $singkatan = implode(
+                                                                    '',
+                                                                    array_map(function ($word) {
+                                                                        return strtoupper(substr($word, 0, 1));
+                                                                    }, $kata),
+                                                                );
+                                                            } else {
+                                                                // Jika 3 kata atau kurang, tampilkan namaTitik secara utuh
+                                                                $singkatan = $cctv->namaTitik;
+                                                            }
+                                                        @endphp
+                                                        <div class="col-md-3 col-sm-6 col-xs-12 cctv-view" id="{{ Str::slug($cctv->namaTitik) }}"
+                                                            data-sekolah="{{ Str::slug($cctv->namaSekolah) }}" style="display: none;">
 
-                                    <div class="card"
-                                        style="margin-bottom: 5px; padding: 10px; width: 100%; max-height: 285px;">
-                                        <a style="font-size: 12pt; font-weight: bold;"
-                                            class="card-title text-center mb-1">
-                                            {{ $cctv->namaSekolah }}
-                                        </a>
-                                        <a style="font-size: 10pt; margin-top: -4px;"
-                                            class="card-title text-center mb-3">
-                                            {{ $singkatan }}
-                                        </a>
-                                        <div class="iframe-container" style="margin: -10px 10px 10px 10px;">
-                                            <iframe data-src="{{ $cctv->link }}" frameborder="0"
-                                                allowfullscreen></iframe>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        @endforeach
+                                                            <div class="card" style="margin-bottom: 5px; padding: 10px; width: 100%; max-height: 285px;">
+                                                                <a style="font-size: 12pt; font-weight: bold;" class="card-title text-center mb-1">
+                                                                    {{ $cctv->namaSekolah }}
+                                                                </a>
+                                                                <a style="font-size: 10pt; margin-top: -4px;" class="card-title text-center mb-3">
+                                                                    {{ $singkatan }}
+                                                                </a>
+                                                                <div class="iframe-container" style="margin: -10px 10px 10px 10px;">
+                                                                    <iframe data-src="{{ $cctv->link }}" frameborder="0" allowfullscreen></iframe>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                            @endforeach
+                                @endforeach
                     @endforeach
                 </div>
             </div>
