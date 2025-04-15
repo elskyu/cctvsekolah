@@ -9,7 +9,7 @@ if (!token) {
 function openCreateModal() {
     $('#formSekolah')[0].reset(); // kosongkan form
     $('#id').val(''); // pastikan ID kosong (tambah mode)
-    $('#modalFormLabel').text('Tambah Sekolah'); // ubah judul modal
+    $('#modalFormLabel').text('Tambah CCTV Sekolah'); // ubah judul modal
     $('#modalForm').modal('show'); // tampilkan modal
 }
 
@@ -22,7 +22,7 @@ function openEditModal(item) {
     $('#namaTitik').val(item.namaTitik);
     $('#link').val(item.link);
 
-    $('#modalFormLabel').text('Edit Sekolah');
+    $('#modalFormLabel').text('Edit CCTV Sekolah');
     $('#modalForm').modal('show');
 }
 

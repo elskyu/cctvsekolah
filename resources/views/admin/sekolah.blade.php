@@ -58,7 +58,7 @@
             <div class="modal-content">
                 <form id="formSekolah">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalFormLabel">Tambah/Edit Sekolah</h5>
+                        <h5 class="modal-title" id="modalFormLabel">Tambah/Edit CCTV Sekolah</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">

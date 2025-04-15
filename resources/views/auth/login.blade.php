@@ -5,7 +5,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Skydash Admin</title>
+    <title>Login Admin</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="{{ asset('skydash/vendors/feather/feather.css') }}">
     <link rel="stylesheet" href="{{ asset('skydash/vendors/ti-icons/css/themify-icons.css') }}">
@@ -25,7 +25,7 @@
                     <div class="col-lg-4 mx-auto">
                         <div class="auth-form-light text-left py-5 px-4 px-sm-5">
                             <div class="brand-logo">
-                                <img src="{{ asset('skydash/images/logo.svg') }}" alt="logo">
+                                <img src="{{ asset('skydash/images/lifemedia_logo.png') }}" alt="logo">
                             </div>
                             <h4>Hello! Selamat Datang !!!</h4>
                             <h6 class="font-weight-light">Login Guyssss.</h6>
@@ -66,63 +66,8 @@
     <!-- endinject -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script>
-        document.getElementById('loginForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            try {
-                const response = await fetch("{{ url('/api/login') }}", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Accept": "application/json"
-                    },
-                    body: JSON.stringify({
-                        email,
-                        password
-                    })
-                });
-
-                const data = await response.json();
-
-                if (response.ok) {
-                    // Simpan token di cookie
-                    Cookies.set('token', data.access_token, { expires: 7, secure: true, sameSite: 'Strict' });
-                    Cookies.set('user', JSON.stringify(data.user), { expires: 7, secure: true, sameSite: 'Strict' });
-
-                    // SweetAlert sukses login
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Login Berhasil!',
-                        text: 'Selamat datang 👋',
-                        timer: 1500,
-                        showConfirmButton: false
-                    });
-
-                    // Redirect ke dashboard
-                    setTimeout(() => {
-                        window.location.href = "{{ route('dashboard') }}";
-                    }, 1600);
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Login Gagal!',
-                        text: data.message || 'Email atau password salah'
-                    });
-                }
-            } catch (error) {
-                console.error(error);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error!',
-                    text: 'Terjadi kesalahan saat login'
-                });
-            }
-        });
-    </script>
+    <!-- Custom Script -->
+    <script src="{{ asset('skydash/js/login.js') }}"></script>
 
 </body>
 

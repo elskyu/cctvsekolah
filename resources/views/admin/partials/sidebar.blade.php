@@ -30,6 +30,12 @@
                     <li class="nav-item"> <a class="nav-link" href="{{ route('sekolah.index') }}">CCTV Sekolah</a></li>
                 </ul>
             </div>
+            <div class="collapse" id="tables">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('sekolah.index') }}">CCTV Panorama</a></li>
+                </ul>
+            </div>
         </li>
+        
     </ul>
 </nav>

@@ -37,8 +37,14 @@ Route::middleware('token.auth')->group(function () {
     Route::post('/cctv-sekolah', [ApiSekolahController::class, 'store']);
     Route::put('/cctv-sekolah/{id}', [ApiSekolahController::class, 'update']);
     Route::delete('/cctv-sekolah/{id}', [ApiSekolahController::class, 'destroy']);
+    Route::post('/cctv-sekolah', [ApiSekolahController::class, 'store']);
+    Route::put('/cctv-sekolah/{id}', [ApiSekolahController::class, 'update']);
+    Route::delete('/cctv-sekolah/{id}', [ApiSekolahController::class, 'destroy']);
 
     // API CCTV PANORAMA
+    Route::post('/cctv-panorama', [ApiPanoramaController::class, 'store']);
+    Route::put('/cctv-panorama/{id}', [ApiPanoramaController::class, 'update']);
+    Route::delete('/cctv-panorama/{id}', [ApiPanoramaController::class, 'destroy']);
     Route::post('/cctv-panorama', [ApiPanoramaController::class, 'store']);
     Route::put('/cctv-panorama/{id}', [ApiPanoramaController::class, 'update']);
     Route::delete('/cctv-panorama/{id}', [ApiPanoramaController::class, 'destroy']);

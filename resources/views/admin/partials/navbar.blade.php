@@ -31,58 +31,9 @@
     </div>
 </nav>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const logoutBtn = document.getElementById('logoutBtn');
-        if (logoutBtn) {
-            logoutBtn.addEventListener('click', async function (e) {
-                e.preventDefault();
-                const token = localStorage.getItem('token');
+@push('scripts')
+<!-- Custom Script -->
+<script src="{{ asset('skydash/js/logout.js') }}"></script>
+@endpush
 
-                if (!token) {
-                    window.location.href = "{{ url('/login') }}";
-                    return;
-                }
-
-                try {
-                    const response = await fetch("{{ url('/api/logout') }}", {
-                        method: "POST",
-                        headers: {
-                            "Authorization": "Bearer " + token,
-                            "Accept": "application/json"
-                        }
-                    });
-
-                    const data = await response.json();
-
-                    if (response.ok) {
-                        localStorage.removeItem('token');
-                        localStorage.removeItem('user');
-
-                        // Tampilkan SweetAlert
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Logout berhasil!',
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-
-                        setTimeout(() => {
-                            window.location.href = "{{ url('/login') }}";
-                        }, 1600);
-                    } else {
-                        throw new Error(data.message || 'Gagal logout');
-                    }
-                } catch (error) {
-                    console.error("Logout error:", error);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Logout gagal!',
-                        text: error.message
-                    });
-                }
-            });
-        }
-    });
-</script>
 
