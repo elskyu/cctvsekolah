@@ -13,11 +13,7 @@ class ApiPanoramaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function dashboard()
-    {
-        $panorama = panorama::all();
-        return view('panorama.panorama', compact('panorama'));
-    }
+
 
     public function index()
     {

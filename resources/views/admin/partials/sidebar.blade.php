@@ -14,28 +14,27 @@
             </a>
             <div class="collapse" id="auth">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href=""> Data Pengguna </a>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('kelola.users') }}"> Data Pengguna </a>
                     </li>
                 </ul>
             </div>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#tables" aria-expanded="false" aria-controls="tables">
+            <a class="nav-link {{ request()->is('sekolah*') || request()->is('panorama*') ? '' : 'collapsed' }}" data-toggle="collapse" href="#tables" aria-expanded="false" aria-controls="tables">
                 <i class="icon-grid-2 menu-icon"></i>
                 <span class="menu-title">Kelola Data</span>
                 <i class="menu-arrow"></i>
             </a>
-            <div class="collapse" id="tables">
+            <div class="collapse {{ request()->is('sekolah*') || request()->is('panorama*') ? 'show' : '' }}" id="tables">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('sekolah.index') }}">CCTV Sekolah</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is('sekolah*') ? 'active' : '' }}" href="{{ route('sekolah.index') }}">CCTV Sekolah</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is('panorama*') ? 'active' : '' }}" href="{{ route('panorama.index') }}">CCTV Panorama</a>
+                    </li>
                 </ul>
             </div>
-            <div class="collapse" id="tables">
-                <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('sekolah.index') }}">CCTV Panorama</a></li>
-                </ul>
-            </div>
-        </li>
-        
+        </li>        
     </ul>
 </nav>
