@@ -15,5 +15,9 @@ Route::get('/', [sekolahController::class, 'dashboard'])->name('sekolah.sekolah'
 Route::get('/login', [sekolahController::class, 'login'])->name('login');
 
 Route::get('/cctv-sekolah', [sekolahController::class, 'index'])->name('sekolah.index');
-// Route Panorama
-Route::get('/panorama', [ApiPanoramaController::class, 'dashboard'])->name('panorama.panorama');
+
+Route::get('/users', [sekolahController::class, 'index3'])->name('kelola.users');
+
+Route::get('/cctv-panorama', [sekolahController::class, 'index2'])->name('panorama.index');
+
+Route::get('/panorama', [sekolahController::class, 'panorama'])->name('panorama.panorama');

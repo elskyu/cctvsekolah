@@ -6,7 +6,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h4 class="card-title mb-0">Kelola Pengguna</h4>
+                            <h4 class="card-title mb-0">CCTV Panorama</h4>
                             <!-- Tombol Tambah -->
                             <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalForm"
                                 onclick="openCreateModal()">Tambah</button>
@@ -16,16 +16,15 @@
                         <input type="text" id="search" class="form-control mb-3" placeholder="Search" />
 
                         <div class="table-responsive">
-                            <table class="table" id="users">
+                            <table class="table" id="panorama">
                                 <thead>
                                     <tr>
-                                        <th>Nama</th>
-                                        <th>Email</th>
-                                        <th>No Hp</th>
+                                        <th>Nama Wilayah</th>
+                                        <th>Nama Titik</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
-                                <tbody id="usersTableBody">
+                                <tbody id="panoramaTableBody">
                                     {{-- isi Data nya --}}
                                 </tbody>
                             </table>
@@ -44,36 +43,27 @@
     <div class="modal fade" id="modalForm" tabindex="-1" aria-labelledby="modalFormLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form id="formUsers">
+                <form id="formPanorama">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalFormLabel">Tambah/Edit Pengguna</h5>
+                        <h5 class="modal-title" id="modalFormLabel">Tambah/Edit CCTV Panorama</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
                         @csrf
                         <input type="hidden" id="id" name="id">
-    
                         <div class="mb-3">
-                            <label for="nama" class="form-label">Nama</label>
-                            <input type="text" class="form-control" id="nama" name="nama" required>
+                            <label>Nama Wilayah</label>
+                            <input type="text" class="form-control" id="namaWilayah" name="namaWilayah" required>
                         </div>
-    
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" required>
+                            <label>Nama Titik</label>
+                            <input type="text" class="form-control" id="namaTitik" name="namaTitik" required>
                         </div>
-    
                         <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" name="password">
-                        </div>
-    
-                        <div class="mb-3">
-                            <label for="phone" class="form-label">No HP</label>
-                            <input type="tel" class="form-control" id="phone" name="phone" required>
+                            <label>Link CCTV</label>
+                            <input type="url" class="form-control" id="link" name="link" required>
                         </div>
                     </div>
-    
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                         <button type="submit" class="btn btn-primary" id="submitBtn">Simpan</button>
@@ -81,7 +71,7 @@
                 </form>
             </div>
         </div>
-    </div>    
+    </div>
 @endsection
 
 @push('scripts')
@@ -94,6 +84,6 @@
     </script>
 
     <!-- Custom Script -->
-    <script src="{{ asset('skydash/js/users.js') }}"></script>
+    <script src="{{ asset('skydash/js/panorama.js') }}"></script>
 
 @endpush

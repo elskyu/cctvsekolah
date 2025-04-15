@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Resources\GlobalResource;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
+
 
 class ApiUsersController extends Controller
 {
@@ -46,7 +48,13 @@ class ApiUsersController extends Controller
                 return new GlobalResource(false, 'Validasi gagal', $validator->errors());
             }
             
-            $users = User::create($request->all());
+            $users = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'phone' => $request->phone,
+            ]);
+            
 
             return new GlobalResource(true, 'Data Users berhasil ditambahkan', $users);
         } catch (\Exception $e) {
@@ -91,6 +99,8 @@ class ApiUsersController extends Controller
                 'phone' => 'required|string',
             ]);
 
+            
+
             if ($validator->fails()) {
                 return new GlobalResource(false, 'Validasi gagal', $validator->errors());
             }
@@ -98,7 +108,7 @@ class ApiUsersController extends Controller
             $data = $request->only(['name', 'email', 'phone']);
 
             if ($request->filled('password')) {
-                $data['password'] = $request->password;
+                $data['password'] = Hash::make($request->password);
             }
 
             $user->update($data);

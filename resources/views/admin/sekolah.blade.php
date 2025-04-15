@@ -26,19 +26,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="sekolahTableBody">
-                                    {{-- @foreach ($sekolah as $item)
-                                        <tr>
-                                            <td>{{ $item->namaWilayah }}</td>
-                                            <td>{{ $item->namaSekolah }}</td>
-                                            <td>{{ $item->namaTitik }}</td>
-                                            <td>
-                                                <div class="d-flex gap-2">
-                                                    <button class="btn btn-sm btn-primary" onclick='openEditModal(@json($item))'>Edit</button>
-                                                    <button class="btn btn-sm btn-danger" onclick="deleteSekolah({{ $item->id }})">Delete</button>
-                                                </div>                                                
-                                            </td>
-                                        </tr>
-                                    @endforeach --}}
+                                    {{-- Isi data --}}
                                 </tbody>
                             </table>
                             <nav>
