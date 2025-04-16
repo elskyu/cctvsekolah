@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('namaWilayah');
             $table->string('namaSekolah');
             $table->string('namaTitik')->nullable();
-            $table->string('link')->unique()->nullable();
+            $table->string('link')->unique();
+            $table->string('status')->default('offline');
             $table->timestamps();
         });
     }
