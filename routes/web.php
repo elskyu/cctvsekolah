@@ -19,4 +19,4 @@ Route::get('/users', [sekolahController::class, 'index3'])->name('kelola.users')
 
 Route::get('/cctv-panorama', [sekolahController::class, 'index2'])->name('panorama.index');
 
-Route::get('/panorama', [sekolahController::class, 'panorama'])->name('panorama.panorama');
+Route::get('/cctvpanorama', [sekolahController::class, 'panorama'])->name('panorama.panorama');

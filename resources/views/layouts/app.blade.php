@@ -42,6 +42,7 @@
     <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
     <!-- CSS Files -->
     <link id="pagestyle" href="../assets/css/soft-ui-dashboard.css?v=1.0.3" rel="stylesheet" />
+    @stack('headscripts')
 </head>
 
 <body
@@ -68,6 +69,7 @@
     <script src="../assets/js/plugins/chartjs.min.js"></script>
     @stack('rtl')
     @stack('dashboard')
+    @stack('scripts')
     <script>
         var win = navigator.platform.indexOf('Win') > -1;
         if (win && document.querySelector('#sidenav-scrollbar')) {
@@ -82,6 +84,7 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
         <script src="../assets/js/soft-ui-dashboard.min.js?v=1.0.3"></script>
+    
 </body>
 
 </html>

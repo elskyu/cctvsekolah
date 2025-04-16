@@ -21,6 +21,7 @@
                                     <tr>
                                         <th>Nama Wilayah</th>
                                         <th>Nama Titik</th>
+                                        <th>Status</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>

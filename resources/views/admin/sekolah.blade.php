@@ -22,6 +22,7 @@
                                         <th>Nama Wilayah</th>
                                         <th>Nama Sekolah</th>
                                         <th>Titik Wilayah</th>
+                                        <th>Status</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
