@@ -13336,6 +13336,8 @@ input[type="button"].btn-block {
   border: 1px solid transparent;
   border-top-left-radius: 0.25rem;
   border-top-right-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
 }
 
 .nav-tabs .nav-link:hover, .nav-tabs .nav-link:focus {
@@ -28515,14 +28517,14 @@ div.tagsinput span.tag a {
 }
 
 .sidebar .nav .nav-item .nav-link i {
-  color: inherit;
+  color: black;
 }
 
 .sidebar .nav .nav-item .nav-link i.menu-icon {
   font-size: 1rem;
   line-height: 1;
   margin-right: 1rem;
-  color: #6C7383;
+  color: black;
 }
 
 .rtl .sidebar .nav .nav-item .nav-link i.menu-icon {
@@ -28539,7 +28541,7 @@ div.tagsinput span.tag a {
   -moz-osx-font-smoothing: grayscale;
   margin-left: auto;
   margin-right: 0;
-  color: #686868;
+  color: black;
 }
 
 .rtl .sidebar .nav .nav-item .nav-link i.menu-arrow {
@@ -28562,7 +28564,7 @@ div.tagsinput span.tag a {
 }
 
 .sidebar .nav .nav-item .nav-link .menu-title {
-  color: inherit;
+  color: black;
   display: inline-block;
   font-size: 0.875rem;
   line-height: 1;
@@ -28591,7 +28593,7 @@ div.tagsinput span.tag a {
 }
 
 .sidebar .nav .nav-item.active > .nav-link {
-  background: #4B49AC;
+  background: #eb6449;
   position: relative;
 }
 
@@ -28608,7 +28610,7 @@ div.tagsinput span.tag a {
 .sidebar .nav .nav-item:hover > .nav-link i,
 .sidebar .nav .nav-item:hover > .nav-link .menu-title,
 .sidebar .nav .nav-item:hover > .nav-link .menu-arrow {
-  color: #fff;
+  color: #4B49AC;
 }
 
 .sidebar .nav:not(.sub-menu) {
@@ -28622,8 +28624,8 @@ div.tagsinput span.tag a {
 }
 
 .sidebar .nav:not(.sub-menu) > .nav-item:hover > .nav-link, .sidebar .nav:not(.sub-menu) > .nav-item:hover[aria-expanded="true"] {
-  background: #4b49ac;
-  color: #fff;
+  /* background: #4b49ac; */
+  color: #4B49AC;
 }
 
 .sidebar .nav:not(.sub-menu) > .nav-item > .nav-link {
@@ -28632,20 +28634,20 @@ div.tagsinput span.tag a {
 
 .sidebar .nav:not(.sub-menu) > .nav-item > .nav-link[aria-expanded="true"] {
   border-radius: 8px 8px 0 0;
-  background: #4B49AC;
-  color: #fff;
+  /* background: #4B49AC; */
+  color: black;
 }
 
 .sidebar .nav:not(.sub-menu) > .nav-item.active {
-  background: #4B49AC;
+  /* background: #4B49AC; */
+  color: black;
 }
 
 .sidebar .nav.sub-menu {
   margin-bottom: 0;
   margin-top: 0;
   list-style: none;
-  padding: 0.25rem 0 0 3.07rem;
-  background: #4B49AC;
+  padding: 0.25rem 0 0 1.8rem;
   padding-bottom: 12px;
 }
 
@@ -28659,12 +28661,12 @@ div.tagsinput span.tag a {
   height: 5px;
   position: absolute;
   margin-top: 16px;
-  border-radius: 50%;
+  border-radius: 100%;
   background: #b2b2b2;
 }
 
 .sidebar .nav.sub-menu .nav-item .nav-link {
-  color: #fff;
+  color: black;
   padding: 0.7rem 1rem;
   position: relative;
   font-size: 0.875rem;
@@ -28674,11 +28676,11 @@ div.tagsinput span.tag a {
 }
 
 .sidebar .nav.sub-menu .nav-item .nav-link:hover {
-  color: #ffffff;
+  color: #4B49AC;
 }
 
 .sidebar .nav.sub-menu .nav-item .nav-link.active {
-  color: #ffffff;
+  color: black;
   background: transparent;
 }
 
@@ -28691,7 +28693,7 @@ div.tagsinput span.tag a {
 }
 
 .sidebar-dark .sidebar .nav .nav-item .nav-link {
-  color: #FFFFFF;
+  color: black;
 }
 
 .sidebar-dark .sidebar .nav .nav-item .nav-link i {
@@ -28711,7 +28713,7 @@ div.tagsinput span.tag a {
 }
 
 .sidebar-dark .sidebar .nav .nav-item.active > .nav-link {
-  background: #4B49AC;
+  background: blue;
 }
 
 .sidebar-dark .sidebar .nav .nav-item.active > .nav-link .menu-title,
@@ -28720,8 +28722,7 @@ div.tagsinput span.tag a {
 }
 
 .sidebar-dark .sidebar .nav:not(.sub-menu) > .nav-item:hover > .nav-link {
-  background: #4B49AC;
-  color: #fff;
+  color: black;
 }
 
 .sidebar-dark .sidebar .nav:not(.sub-menu) > .nav-item .nav-link[aria-expanded="true"] {
@@ -28737,7 +28738,7 @@ div.tagsinput span.tag a {
 }
 
 .sidebar-dark .sidebar .nav.sub-menu .nav-item .nav-link:before {
-  color: white;
+  color: black;
 }
 
 .sidebar-dark .sidebar .nav.sub-menu .nav-item .nav-link.active {
@@ -29993,11 +29994,11 @@ div.tagsinput span.tag a {
     display: none;
   }
   .sidebar-icon-only .sidebar .nav .nav-item .nav-link .menu-title {
-    border-radius: 0 5px 5px 0px;
+    border-radius: 5px 5px 5px 5px;
     background: #4B49AC;
   }
   .rtl.sidebar-icon-only .sidebar .nav .nav-item .nav-link .menu-title {
-    border-radius: 5px 0 0 5px;
+    border-radius: 5px 5px 5px 5px;
   }
   .sidebar-icon-only .sidebar .nav .nav-item .nav-link i.menu-icon {
     margin-right: 0;
