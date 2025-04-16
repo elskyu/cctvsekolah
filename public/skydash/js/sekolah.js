@@ -64,6 +64,7 @@ function renderTablePage(page) {
             <td>${item.namaWilayah}</td>
             <td>${item.namaSekolah}</td>
             <td>${item.namaTitik}</td>
+            <td>${item.status}</td>
             <td>
                 <div style="display: flex; gap: 5px;">
                     <button class="btn btn-sm btn-primary" onclick='openEditModal(${JSON.stringify(item)})'>Edit</button>
