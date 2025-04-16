@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('panorama', function (Blueprint $table) {
             $table->id();
             $table->string('namaWilayah');
-            $table->string('namaTitik');
-            $table->string('link');
+            $table->string('namaTitik')->nullable();
+            $table->string('link')->unique();
+            $table->string('status')->default('offline');
             $table->timestamps();
         });
     }
