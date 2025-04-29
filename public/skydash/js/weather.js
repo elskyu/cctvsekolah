@@ -52,22 +52,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-    // if (navigator.geolocation) {
-    //     navigator.geolocation.getCurrentPosition(
-    //         (position) => {
-    //             const lat = position.coords.latitude;
-    //             const lon = position.coords.longitude;
-    //             getWeatherByCoords(lat, lon);
-    //         },
-    //         (error) => {
-    //             console.warn('Geolocation gagal, fallback ke Yogyakarta:', error.message);
-    //             getWeatherByCoords(-7.797068, 110.370529);
-    //         }
-    //     );
-    // } else {
-    //     console.warn('Browser tidak mendukung geolocation, fallback ke Yogyakarta');
-    //     getWeatherByCoords(-7.797068, 110.370529);
-    // }
     // Langsung set ke Jogja
     getWeatherByCoords(-7.797068, 110.370529);
 });

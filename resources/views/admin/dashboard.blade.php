@@ -79,7 +79,7 @@
                         <div class="card card-light-danger">
                             <div class="card-body">
                                 <p class="mb-4">Belum digunakan</p>
-                                <p class="fs-30 mb-2">08953391515</p>
+                                <p class="fs-30 mb-2">0</p>
                                 <p>0.22% (30 days)</p>
                             </div>
                         </div>
@@ -104,7 +104,7 @@
 
             // Mendapatkan username dari cookie
             const user = Cookies.get('user');
-            let username = 'Guest'; // Default jika tidak ada user di cookie
+            let username = 'Admin'; // Default jika tidak ada user di cookie
 
             // Jika ada user di cookie, ambil nama pengguna
             if (user) {
@@ -148,15 +148,3 @@
     </script>
 @endpush
 
-{{-- <style>
-    .card-link {
-        display: block;
-        text-decoration: none;
-        color: inherit;
-    }
-
-    .card-link:hover {
-        transform: scale(1.05);
-        transition: transform 0.3s ease-in-out;
-    }
-</style> --}}

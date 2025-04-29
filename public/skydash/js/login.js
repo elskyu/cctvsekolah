@@ -17,8 +17,8 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         const data = await response.json();
 
         if (response.ok) {
-            Cookies.set('token', data.access_token, { expires: 7, secure: true, sameSite: 'Strict' });
-            Cookies.set('user', JSON.stringify(data.user), { expires: 7, secure: true, sameSite: 'Strict' });
+            Cookies.set('token', data.access_token, { expires: 7, sameSite: 'Strict' });
+            Cookies.set('user', JSON.stringify(data.user), { expires: 7, sameSite: 'Strict' });
 
             Swal.fire({
                 icon: 'success',
