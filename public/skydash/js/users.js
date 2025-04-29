@@ -1,9 +1,9 @@
 const token = Cookies.get('token');
 
-if (!token) {
-    // Redirect ke halaman login kalau token tidak ada
-    window.location.href = '/login'; 
-}
+// if (!token) {
+//     // Redirect ke halaman login kalau token tidak ada
+//     window.location.href = '/login';
+// }
 
 // Modal: Tambah Data
 function openCreateModal() {
@@ -132,7 +132,7 @@ $(document).ready(function () {
             email,
             phone,
         };
-    
+
         if (password) {
             data.password = password; // kirim password hanya jika diisi
         }
@@ -147,7 +147,7 @@ $(document).ready(function () {
             },
 
             data: data ,
-            
+
             success: function (response) {
                 if (response.success) {
                     Swal.fire('Sukses', response.message, 'success').then(() => {
@@ -209,7 +209,7 @@ $('#search').on('keyup', function () {
     const filtered = usersData.filter(item =>
         item.name.toLowerCase().includes(searchText) ||
         item.email.toLowerCase().includes(searchText) ||
-        item.phone.toLowerCase().includes(searchText)        
+        item.phone.toLowerCase().includes(searchText)
     );
 
     currentPage = 1;

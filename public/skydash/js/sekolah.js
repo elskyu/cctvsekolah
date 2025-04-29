@@ -1,9 +1,9 @@
 const token = Cookies.get('token');
 
-if (!token) {
-    // Redirect ke halaman login kalau token tidak ada
-    window.location.href = '/login'; 
-}
+// if (!token) {
+//     // Redirect ke halaman login kalau token tidak ada
+//     window.location.href = '/login';
+// }
 
 // Modal: Tambah Data
 function openCreateModal() {
