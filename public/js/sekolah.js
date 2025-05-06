@@ -31,12 +31,13 @@ function toggleIcon(event, namaSekolah) {
 
     const icon = event.target;
     const cctvToShow = document.querySelectorAll(`.cctv-view[data-sekolah="${namaSekolah}"]`);
-    const checkboxes = document.querySelectorAll(`input[data-sekolah="${namaSekolah}"]`); // Pilih semua checkbox
+    const checkboxes = document.querySelectorAll(`input[data-sekolah="${namaSekolah}"]`);
 
     let activeSchools = JSON.parse(localStorage.getItem("activeSchools")) || [];
 
+    // Toggle visibility berdasarkan status ikon
     if (icon.classList.contains('fa-eye')) {
-        // Tampilkan CCTV
+        // Tampilkan CCTV untuk sekolah yang dipilih
         icon.classList.remove('fa-eye');
         icon.classList.add('fa-eye-slash');
 
@@ -53,14 +54,15 @@ function toggleIcon(event, namaSekolah) {
             activeSchools.push(namaSekolah);
         }
 
-        // Centang semua checkbox yang terkait
+        // Centang semua checkbox yang terkait dengan sekolah yang dipilih dan tampilkan CCTV-nya
         checkboxes.forEach(checkbox => {
             checkbox.checked = true;
-            toggleCCTV(checkbox.id.replace('checkbox-', ''), checkbox);
+            const cctvId = checkbox.id.replace('checkbox-', '');
+            toggleCCTV(cctvId, checkbox);
         });
 
     } else {
-        // Sembunyikan CCTV
+        // Sembunyikan CCTV untuk sekolah yang dipilih
         icon.classList.remove('fa-eye-slash');
         icon.classList.add('fa-eye');
 
@@ -71,10 +73,11 @@ function toggleIcon(event, namaSekolah) {
         // Hapus sekolah dari daftar aktif
         activeSchools = activeSchools.filter(school => school !== namaSekolah);
 
-        // Hapus centang checkbox yang sesuai
+        // Hapus centang pada semua checkbox yang terkait dengan sekolah yang dipilih dan sembunyikan CCTV-nya
         checkboxes.forEach(checkbox => {
             checkbox.checked = false;
-            toggleCCTV(checkbox.id.replace('checkbox-', ''), checkbox);
+            const cctvId = checkbox.id.replace('checkbox-', '');
+            toggleCCTV(cctvId, checkbox);
         });
     }
 

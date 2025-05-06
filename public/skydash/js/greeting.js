@@ -6,7 +6,7 @@ function updateGreetingAndMotivation() {
 
     // Mendapatkan username dari cookie
     const user = Cookies.get('user');
-    let username = 'Admin'; // Default jika tidak ada user di cookie
+    let username = 'Bangskuy'; // Default jika tidak ada user di cookie
 
     // Jika ada user di cookie, ambil nama pengguna
     if (user) {

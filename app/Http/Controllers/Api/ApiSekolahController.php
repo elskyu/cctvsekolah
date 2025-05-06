@@ -17,17 +17,17 @@ class ApiSekolahController extends Controller
     {
         try {
             $sekolah = Sekolah::all();
-    
+
             if ($sekolah->isEmpty()) {
                 return new GlobalResource(false, 'Data Sekolah tidak ditemukan', null);
             }
-    
+
             return new GlobalResource(true, 'List Data Sekolah', $sekolah);
         } catch (\Exception $e) {
             return new GlobalResource(false, 'Terjadi kesalahan: ' . $e->getMessage(), null);
         }
     }
-    
+
 
     /**
      * Store a newly created resource in storage.
@@ -36,10 +36,10 @@ class ApiSekolahController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'namaWilayah'  => 'required|string|max:255',
-                'namaSekolah'  => 'required|string|max:255',
-                'namaTitik'    => 'required|string|max:255',
-                'link'         => 'required|url',
+                'namaWilayah' => 'required|string|max:255',
+                'namaSekolah' => 'required|string|max:255',
+                'namaTitik' => 'required|string|max:255',
+                'link' => 'required|url',
             ]);
 
             if ($validator->fails()) {
@@ -85,10 +85,10 @@ class ApiSekolahController extends Controller
             }
 
             $validator = Validator::make($request->all(), [
-                'namaWilayah'  => 'required|string|max:255',
-                'namaSekolah'  => 'required|string|max:255',
-                'namaTitik'    => 'required|string|max:255',
-                'link'         => 'required|url',
+                'namaWilayah' => 'required|string|max:255',
+                'namaSekolah' => 'required|string|max:255',
+                'namaTitik' => 'required|string|max:255',
+                'link' => 'required|url',
             ]);
 
             if ($validator->fails()) {
