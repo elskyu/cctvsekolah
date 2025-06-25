@@ -32,7 +32,7 @@
                             <nav>
                                 <ul class="pagination justify-content-center" id="pagination"></ul>
                             </nav>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -54,7 +54,7 @@
                         <input type="hidden" id="id" name="id">
                         <div class="mb-3">
                             <label>Nama Wilayah</label>
-                            <input type="text" class="form-control" id="namaWilayah" name="namaWilayah" required>
+                            <input type="text" class="form-control" id="wilayah_id" name="wilayah_id" required>
                         </div>
                         <div class="mb-3">
                             <label>Nama Titik</label>

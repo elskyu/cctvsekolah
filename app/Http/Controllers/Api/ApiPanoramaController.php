@@ -38,9 +38,9 @@ class ApiPanoramaController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'namaWilayah'  => 'required|string|max:255',
-                'namaTitik'    => 'required|string|max:255',
-                'link'         => 'required|url',
+                'wilayah_id' => 'required|string|max:255',
+                'namaTitik' => 'required|string|max:255',
+                'link' => 'required|url',
             ]);
 
             if ($validator->fails()) {
@@ -86,9 +86,9 @@ class ApiPanoramaController extends Controller
             }
 
             $validator = Validator::make($request->all(), [
-                'namaWilayah'  => 'required|string|max:255',
-                'namaTitik'    => 'required|string|max:255',
-                'link'         => 'required|url',
+                'wilayah_id' => 'required|string|max:255',
+                'namaTitik' => 'required|string|max:255',
+                'link' => 'required|url',
             ]);
 
             if ($validator->fails()) {

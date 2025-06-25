@@ -8,23 +8,32 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class ApiAuthController extends Controller
 {
     public function login(Request $request)
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
+        // Validasi input
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required',
         ]);
 
-
-        if (!Auth::attempt($credentials)) {
-            return response()->json(['message' => 'Login gagal. Periksa email atau password Anda'], 401);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 422);
         }
 
-        $user = Auth::user();
-        $token = $user->createToken('auth_token')->plainTextToken;
+        // Cari user berdasarkan email
+        $user = User::where('email', $request->email)->first();
+
+        // Cek apakah user ada dan passwordnya cocok dengan password di database (plaintext)
+        if (!$user || $request->password !== $user->password) {
+            return response()->json(['error' => 'Email atau password salah'], 401);
+        }
+
+        // Generate token
+        $token = $user->createToken('YourAppName')->plainTextToken;
 
         return response()->json([
             'message' => 'Login berhasil',
@@ -33,6 +42,7 @@ class ApiAuthController extends Controller
             'user' => $user,
         ]);
     }
+
 
     public function logout(Request $request)
     {

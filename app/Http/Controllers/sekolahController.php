@@ -27,7 +27,42 @@ class sekolahController extends Controller
         $panoramaMessage = $panoramaTodayCount > 0 ? 'Ada perubahan hari ini' : 'Tidak ada perubahan hari ini';
         $userMessage = $userTodayCount > 0 ? 'Ada perubahan hari ini' : 'Tidak ada perubahan hari ini';
 
-        return view('admin.dashboard', compact('sekolahCount', 'panoramaCount', 'userCount', 'sekolahMessage', 'panoramaMessage', 'userMessage'));
+        // Hitung total CCTV offline (Sekolah + Panorama)
+        $totalOfflineSekolah = Sekolah::where('status', 'offline')->count();
+        $totalOfflinePanorama = Panorama::where('status_panorama', 'offline')->count();
+        $totalOffline = $totalOfflineSekolah + $totalOfflinePanorama;
+
+        $offlineMessage = $totalOffline > 0 ? 'Ada perubahan hari ini' : 'Tidak ada perubahan hari ini';
+
+
+        // Ambil detail CCTV offline Sekolah
+        $offlineSekolah = Sekolah::where('status', 'offline')
+            ->select('id', 'namaSekolah', 'last_seen')
+            ->orderBy('namaSekolah')
+            ->get();
+
+        // Ambil detail CCTV offline Panorama
+        $offlinePanorama = Panorama::where('status_panorama', 'offline')
+            ->select('id', 'namaTitik', 'last_seen_panorama')
+            ->orderBy('namaTitik')
+            ->get();
+
+        // Gabungkan detail offline Sekolah dan Panorama (jika ingin)
+        $offlineCCTVs = collect()
+            ->merge($offlineSekolah)
+            ->merge($offlinePanorama);
+
+        return view('admin.dashboard', compact(
+            'sekolahCount',
+            'panoramaCount',
+            'userCount',
+            'sekolahMessage',
+            'panoramaMessage',
+            'userMessage',
+            'offlineMessage',
+            'totalOffline',
+            'offlineCCTVs'
+        ));
     }
 
     public function cctvsekolah()

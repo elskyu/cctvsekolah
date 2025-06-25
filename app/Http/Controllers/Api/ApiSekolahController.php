@@ -36,7 +36,7 @@ class ApiSekolahController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'namaWilayah' => 'required|string|max:255',
+                'wilayah_id' => 'required|string|max:255',
                 'namaSekolah' => 'required|string|max:255',
                 'namaTitik' => 'required|string|max:255',
                 'link' => 'required|url',
@@ -85,7 +85,7 @@ class ApiSekolahController extends Controller
             }
 
             $validator = Validator::make($request->all(), [
-                'namaWilayah' => 'required|string|max:255',
+                'wilayah_id' => 'required|string|max:255',
                 'namaSekolah' => 'required|string|max:255',
                 'namaTitik' => 'required|string|max:255',
                 'link' => 'required|url',

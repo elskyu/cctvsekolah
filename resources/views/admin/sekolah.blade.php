@@ -13,17 +13,20 @@
                         </div>
 
                         <!-- Search Input -->
-                        <input type="text" id="search" class="form-control mb-3" placeholder="Search" />
+                        <input type="text" id="searchInput" class="form-control form-control-sm"
+                            placeholder="Cari nama sekolah, wilayah, atau titik..." aria-label="Cari CCTV Sekolah"
+                            onkeyup="searchcctvsekolah()"
+                            style="height: 2.1rem; padding: 5px 10px; border-radius: 0.25rem;">
 
                         <div class="table-responsive">
                             <table class="table" id="sekolah">
                                 <thead>
                                     <tr>
-                                        <th>Nama Wilayah</th>
-                                        <th>Nama Sekolah</th>
-                                        <th>Titik Wilayah</th>
-                                        <th>Status</th>
-                                        <th>Aksi</th>
+                                        <th class="text-center">Nama Wilayah</th>
+                                        <th class="text-center">Nama Sekolah</th>
+                                        <th class="text-center">Titik Wilayah</th>
+                                        <th class="text-center">Status</th>
+                                        <th class="text-center">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody id="sekolahTableBody">
@@ -33,7 +36,7 @@
                             <nav>
                                 <ul class="pagination justify-content-center" id="pagination"></ul>
                             </nav>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -55,7 +58,14 @@
                         <input type="hidden" id="id" name="id">
                         <div class="mb-3">
                             <label>Nama Wilayah</label>
-                            <input type="text" class="form-control" id="namaWilayah" name="namaWilayah" required>
+                            <select class="form-control" id="wilayah_id" name="wilayah_id" required>
+                                <option value="">Pilih Wilayah</option>
+                                <option value="1">KAB BANTUL</option>
+                                <option value="2">KAB SLEMAN</option>
+                                <option value="3">KAB GUNUNG KIDUL</option>
+                                <option value="4">KAB KULON PROGO</option>
+                                <option value="5">KOTA YOGYAKARTA</option>
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label>Nama Sekolah</label>

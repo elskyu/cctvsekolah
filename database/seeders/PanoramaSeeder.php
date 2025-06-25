@@ -23,7 +23,7 @@ class PanoramaSeeder extends Seeder
         foreach ($data as $item) {
             DB::table('panorama')->insert([
                 'id' => $item[0],
-                'namaWilayah' => $item[1],
+                'wilayah_id' => $item[1],
                 'namaTitik' => $item[2],
                 'link' => $item[3],
                 'created_at' => Carbon::parse($item[4]),
