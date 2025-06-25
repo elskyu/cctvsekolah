@@ -12,9 +12,30 @@ class sekolah extends Model
     protected $table = 'sekolah'; // Sesuaikan dengan nama tabel di database
 
     protected $fillable = [
-        'namaWilayah',
+        'wilayah_id',
         'namaSekolah',
         'namaTitik',
         'link',
+        'status',
+        'last_seen',
     ];
+
+    protected $casts = [
+        'last_seen' => 'datetime',
+    ];
+
+    /**
+     * Cek apakah CCTV masih dianggap online berdasarkan last_seen
+     *
+     * @param int $thresholdMinutes
+     * @return bool
+     */
+    public function isOnline(int $thresholdMinutes = 10): bool
+    {
+        if (!$this->last_seen) {
+            return false;
+        }
+
+        return $this->last_seen->diffInMinutes(now()) <= $thresholdMinutes;
+    }
 }

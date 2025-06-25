@@ -38,27 +38,27 @@
                     <!-- Card for Users -->
                     <div class="col-md-6 mb-4 stretch-card transparent">
                         {{-- <a href="{{ route('kelola.users') }}" class="card-link"> --}}
-                        <div class="card card-tale">
-                            <div class="card-body">
-                                <p class="mb-4">Users</p>
-                                <p class="fs-30 mb-2">{{ $userCount }}</p> <!-- Menampilkan jumlah user -->
-                                <p class="fs-14 text-muted">{{ $userMessage }}</p>
-                                <!-- Alternatif untuk menunjukkan perubahan -->
+                            <div class="card card-tale">
+                                <div class="card-body">
+                                    <p class="mb-4">Users</p>
+                                    <p class="fs-30 mb-2">{{ $userCount }}</p> <!-- Menampilkan jumlah user -->
+                                    <p class="fs-14 text-white">{{ $userMessage }}</p>
+                                    <!-- Alternatif untuk menunjukkan perubahan -->
+                                </div>
                             </div>
-                        </div>
                     </div>
 
                     <!-- Card for CCTV Panorama -->
                     <div class="col-md-6 mb-4 stretch-card transparent">
                         {{-- <a href="{{ route('panorama.index') }}" class="card-link"> --}}
-                        <div class="card card-dark-blue">
-                            <div class="card-body">
-                                <p class="mb-4">CCTV Panorama</p>
-                                <p class="fs-30 mb-2">{{ $panoramaCount }}</p> <!-- Menampilkan jumlah CCTV Panorama -->
-                                <p class="fs-14 text-muted">{{ $panoramaMessage }}</p>
-                                <!-- Alternatif untuk menunjukkan perubahan -->
+                            <div class="card card-dark-blue">
+                                <div class="card-body">
+                                    <p class="mb-4">CCTV Panorama</p>
+                                    <p class="fs-30 mb-2">{{ $panoramaCount }}</p> <!-- Menampilkan jumlah CCTV Panorama -->
+                                    <p class="fs-14 text-white">{{ $panoramaMessage }}</p>
+                                    <!-- Alternatif untuk menunjukkan perubahan -->
+                                </div>
                             </div>
-                        </div>
                     </div>
                 </div>
 
@@ -66,21 +66,21 @@
                     <!-- Card for CCTV Sekolah -->
                     <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
                         {{-- <a href="{{ route('sekolah.index') }}" class="card-link"> --}}
-                        <div class="card card-light-blue">
-                            <div class="card-body">
-                                <p class="mb-4">CCTV Sekolah</p>
-                                <p class="fs-30 mb-2">{{ $sekolahCount }}</p> <!-- Menampilkan jumlah CCTV Sekolah -->
-                                <p class="fs-14 text-muted">{{ $sekolahMessage }}</p>
-                                <!-- Alternatif untuk menunjukkan perubahan -->
+                            <div class="card card-light-blue">
+                                <div class="card-body">
+                                    <p class="mb-4">CCTV Sekolah</p>
+                                    <p class="fs-30 mb-2">{{ $sekolahCount }}</p> <!-- Menampilkan jumlah CCTV Sekolah -->
+                                    <p class="fs-14 text-white">{{ $sekolahMessage }}</p>
+                                    <!-- Alternatif untuk menunjukkan perubahan -->
+                                </div>
                             </div>
-                        </div>
                     </div>
                     <div class="col-md-6 stretch-card transparent">
                         <div class="card card-light-danger">
                             <div class="card-body">
-                                <p class="mb-4">Belum digunakan</p>
-                                <p class="fs-30 mb-2">0</p>
-                                <p>0.22% (30 days)</p>
+                                <p class="mb-4">Cctv Offline</p>
+                                <p class="fs-30 mb-2">{{ $totalOffline }}</p>
+                                <p class="fs-14 text-white">{{ $offlineMessage }}</p>
                             </div>
                         </div>
                     </div>
@@ -98,4 +98,3 @@
     <!-- Custom Script -->
     <script src="{{ asset('skydash/js/greeting.js') }}"></script>
 @endpush
-

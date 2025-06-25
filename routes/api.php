@@ -56,8 +56,10 @@ Route::middleware('token.auth')->group(function () {
     Route::delete('/cctv-panorama/{id}', [ApiPanoramaController::class, 'destroy']);
 
     // API USERS
-    Route::apiResource('/users', ApiUsersController::class);
+
+
 
 });
 
+Route::apiResource('/users', ApiUsersController::class);
 

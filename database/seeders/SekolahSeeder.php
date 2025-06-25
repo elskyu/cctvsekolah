@@ -15,7 +15,7 @@ class SekolahSeeder extends Seeder
     {
         DB::table('sekolah')->insert([
             [
-                'namaWilayah' => 'Bantul',
+                'wilayah_id' => 'Bantul',
                 'namaSekolah' => 'SMKN 1 Yogyakarta',
                 'namaTitik' => 'CCTV_Sekolah11111 11111 11111 111111',
                 'link' => 'http://103.255.15.227:5080/CCTVSEKOLAH/play.html?id=cctv_smk1yk_aula',
@@ -23,7 +23,7 @@ class SekolahSeeder extends Seeder
                 'updated_at' => '2025-02-14 21:27:10',
             ],
             [
-                'namaWilayah' => 'Bantul',
+                'wilayah_id' => 'Bantul',
                 'namaSekolah' => 'SMKN 1 Yogyakarta',
                 'namaTitik' => 'CCTV_Sekolah12',
                 'link' => 'http://103.255.15.227:5080/CCTVSEKOLAH/play.html?id=cctv_smk1yk_aula2',
@@ -31,7 +31,7 @@ class SekolahSeeder extends Seeder
                 'updated_at' => '2025-02-12 20:14:56',
             ],
             [
-                'namaWilayah' => 'Sleman',
+                'wilayah_id' => 'Sleman',
                 'namaSekolah' => 'SMKN 1 Yogyakarta',
                 'namaTitik' => 'CCTV_Sekolah13',
                 'link' => 'http://103.255.15.227:5080/CCTVSEKOLAH/play.html?id=cctv_smk1yk_aula3',
@@ -39,7 +39,7 @@ class SekolahSeeder extends Seeder
                 'updated_at' => '2025-02-16 20:45:24',
             ],
             [
-                'namaWilayah' => 'Bantul',
+                'wilayah_id' => 'Bantul',
                 'namaSekolah' => 'SMKN 1 Jogjakarta',
                 'namaTitik' => 'SMK2 2222222222 222222222222 22222222222 2222222222 22222',
                 'link' => 'rtmp://103.255.15.222:1935/cctv-sekolah/cctv_smk2yk_a106.stream',
@@ -47,7 +47,7 @@ class SekolahSeeder extends Seeder
                 'updated_at' => '2025-02-13 02:04:08',
             ],
             [
-                'namaWilayah' => 'Imogiri',
+                'wilayah_id' => 'Imogiri',
                 'namaSekolah' => 'SMA 1 Yogyakarta',
                 'namaTitik' => 'SMK23',
                 'link' => 'http://103.255.15.227:5080/CCTVSEKOLAH/play.html?id=cctv_smk1yk_aula34',
@@ -55,7 +55,7 @@ class SekolahSeeder extends Seeder
                 'updated_at' => '2025-02-16 18:41:21',
             ],
             [
-                'namaWilayah' => 'Bantul',
+                'wilayah_id' => 'Bantul',
                 'namaSekolah' => 'SMA 7 Bantul',
                 'namaTitik' => 'CCTV Lapangan',
                 'link' => 'ttp://103.255.15.227:5080/CCTVSEKOLAH/play.html?id=cctv_smk1yk_aula3',
@@ -63,7 +63,7 @@ class SekolahSeeder extends Seeder
                 'updated_at' => '2025-02-16 19:39:33',
             ],
             [
-                'namaWilayah' => 'Bantul',
+                'wilayah_id' => 'Bantul',
                 'namaSekolah' => 'SMA 7 Bantul',
                 'namaTitik' => 'CCTV AULA',
                 'link' => 'ttp://103.255.15.227:5080/CCTVSEKOLAH/play.html?id=cctv_smk1yk_aulaaula',
@@ -71,7 +71,7 @@ class SekolahSeeder extends Seeder
                 'updated_at' => '2025-02-16 19:40:02',
             ],
             [
-                'namaWilayah' => 'Bantul',
+                'wilayah_id' => 'Bantul',
                 'namaSekolah' => 'SMA 7 Bantul',
                 'namaTitik' => 'CCTV Kantin',
                 'link' => 'ttp://103.255.15.227:5080/CCTVSEKOLAH/play.html?id=cctv_smk1yk_aulakantin',
@@ -79,7 +79,7 @@ class SekolahSeeder extends Seeder
                 'updated_at' => '2025-02-16 19:40:26',
             ],
             [
-                'namaWilayah' => 'Bantul',
+                'wilayah_id' => 'Bantul',
                 'namaSekolah' => 'SMA 7 Bantul',
                 'namaTitik' => 'CCTV Parkiran',
                 'link' => 'ttp://103.255.15.227:5080/CCTVSEKOLAH/play.html?id=cctv_smk1yk_aulaparkiran',
@@ -87,7 +87,7 @@ class SekolahSeeder extends Seeder
                 'updated_at' => '2025-02-16 19:40:54',
             ],
             [
-                'namaWilayah' => 'Imogiri',
+                'wilayah_id' => 'Imogiri',
                 'namaSekolah' => 'SMP 1 Yogyakarta',
                 'namaTitik' => 'Kelas 7F',
                 'link' => 'ttp://103.255.15.227:5080/CCTVSEKOLAH/play.html?id=cctv_smk1yk_aula45',
@@ -95,7 +95,7 @@ class SekolahSeeder extends Seeder
                 'updated_at' => '2025-02-19 23:46:13',
             ],
             [
-                'namaWilayah' => 'KOTA JOGJA',
+                'wilayah_id' => 'KOTA JOGJA',
                 'namaSekolah' => 'SMA 7 Bantul',
                 'namaTitik' => 'CCTV_Sekolah100',
                 'link' => 'http://103.255.15.227:5080/CCTVSEKOLAH/play.html?id=cctv_smk1yk_aula5',
@@ -103,7 +103,7 @@ class SekolahSeeder extends Seeder
                 'updated_at' => '2025-02-21 00:11:23',
             ],
             [
-                'namaWilayah' => 'KABUPATEN SLEMAN',
+                'wilayah_id' => 'KABUPATEN SLEMAN',
                 'namaSekolah' => 'SMKN 1 Sleman',
                 'namaTitik' => 'CCTV_Sekolah17',
                 'link' => 'http://103.255.15.227:5080/CCTVSEKOLAH/play.html?id=cctv_smk1yk_aula209',
@@ -111,7 +111,7 @@ class SekolahSeeder extends Seeder
                 'updated_at' => '2025-02-21 00:12:10',
             ],
             [
-                'namaWilayah' => 'KABUPATEN GK',
+                'wilayah_id' => 'KABUPATEN GK',
                 'namaSekolah' => 'SMKN 2 Yogyakarta',
                 'namaTitik' => 'CCTV_Sekolah4',
                 'link' => 'http://103.255.15.227:5080/CCTVSEKOLAH/play.html?id=cctv_smk1yk_aula38',
@@ -119,7 +119,7 @@ class SekolahSeeder extends Seeder
                 'updated_at' => '2025-02-21 00:12:59',
             ],
             [
-                'namaWilayah' => 'KOTA JOGJA',
+                'wilayah_id' => 'KOTA JOGJA',
                 'namaSekolah' => 'SMKN 1 Yogyakarta',
                 'namaTitik' => 'CCTV_Sekolah1',
                 'link' => 'tp://103.255.15.227:5080/CCTVSEKOLAH/play.html?id=cctv_smk1yk_aula',
@@ -127,7 +127,7 @@ class SekolahSeeder extends Seeder
                 'updated_at' => '2025-02-21 02:25:06',
             ],
             [
-                'namaWilayah' => 'KOTA JOGJA',
+                'wilayah_id' => 'KOTA JOGJA',
                 'namaSekolah' => 'SMP 7 Bantul',
                 'namaTitik' => 'CCTV_Sekolah1',
                 'link' => 'gf',

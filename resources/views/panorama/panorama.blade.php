@@ -17,16 +17,16 @@
 @php
     use App\Models\panorama;
 
-    $panorama = panorama::select('id', 'namaWilayah', 'namaTitik', 'link')->get();
-    $groupedCctvs = $panorama->groupBy('namaWilayah')->map(function ($wilayahGroup) {
+    $panorama = panorama::select('id', 'wilayah_id', 'namaTitik', 'link')->get();
+    $groupedCctvs = $panorama->groupBy('wilayah_id')->map(function ($wilayahGroup) {
         return $wilayahGroup->groupBy('namaTitik');
     });
 
-    $groupedCctvs = Panorama::select('id', 'namaWilayah', 'namaTitik', 'link')
-        ->orderBy('namaWilayah', 'asc')
+    $groupedCctvs = Panorama::select('id', 'wilayah_id', 'namaTitik', 'link')
+        ->orderBy('wilayah_id', 'asc')
         ->orderBy('namaTitik', 'asc')
         ->get()
-        ->groupBy('namaWilayah'); // Hanya group by wilayah saja
+        ->groupBy('wilayah_id'); // Hanya group by wilayah saja
 @endphp
 
 <body>
@@ -113,38 +113,38 @@
 
                 <div class="row g-3">
                     @foreach ($groupedCctvs as $wilayah => $panoramaGroup)
-                                    @foreach ($panoramaGroup as $panorama)
-                                                    @php
-                                                        // Memeriksa jumlah kata dalam namaTitik
-                                                        $kata = explode(' ', $panorama->namaTitik);
-                                                        if (count($kata) > 3) {
-                                                            // Jika lebih dari 3 kata, singkat dengan mengambil huruf depan setiap kata
-                                                            $singkatan = implode(
-                                                                '',
-                                                                array_map(function ($word) {
-                                                                    return strtoupper(substr($word, 0, 1));
-                                                                }, $kata),
-                                                            );
-                                                        } else {
-                                                            // Jika 3 kata atau kurang, tampilkan namaTitik secara utuh
-                                                            $singkatan = $panorama->namaTitik;
-                                                        }
-                                                    @endphp
-                                                    <div class="col-md-3 col-sm-6 col-xs-12 cctv-view" id="{{ Str::slug($panorama->namaTitik) }}"
-                                                        data-panorama="{{ Str::slug($panorama->namaTitik) }}" style="display: none;">
-                                                        <div class="card">
-                                                            <a style="font-size: 12pt; font-weight: bold;" class="card-title text-center mb-1">
-                                                                {{ $panorama->namaWilayah }}
-                                                            </a>
-                                                            <a style="font-size: 10pt; margin-top: -4px;" class="card-title text-center mb-3">
-                                                                {{ $singkatan }}
-                                                            </a>
-                                                            <div class="iframe-container" style="margin: -10px 10px 10px 10px;">
-                                                                <iframe data-src="{{ $panorama->link }}" frameborder="0" allowfullscreen></iframe>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                    @endforeach
+                        @foreach ($panoramaGroup as $panorama)
+                            @php
+                                // Memeriksa jumlah kata dalam namaTitik
+                                $kata = explode(' ', $panorama->namaTitik);
+                                if (count($kata) > 3) {
+                                    // Jika lebih dari 3 kata, singkat dengan mengambil huruf depan setiap kata
+                                    $singkatan = implode(
+                                        '',
+                                        array_map(function ($word) {
+                                            return strtoupper(substr($word, 0, 1));
+                                        }, $kata),
+                                    );
+                                } else {
+                                    // Jika 3 kata atau kurang, tampilkan namaTitik secara utuh
+                                    $singkatan = $panorama->namaTitik;
+                                }
+                            @endphp
+                            <div class="col-md-3 col-sm-6 col-xs-12 cctv-view" id="{{ Str::slug($panorama->namaTitik) }}"
+                                data-panorama="{{ Str::slug($panorama->namaTitik) }}" style="display: none;">
+                                <div class="card">
+                                    <a style="font-size: 12pt; font-weight: bold;" class="card-title text-center mb-1">
+                                        {{ $panorama->wilayah_id }}
+                                    </a>
+                                    <a style="font-size: 10pt; margin-top: -4px;" class="card-title text-center mb-3">
+                                        {{ $singkatan }}
+                                    </a>
+                                    <div class="iframe-container" style="margin: -10px 10px 10px 10px;">
+                                        <iframe data-src="{{ $panorama->link }}" frameborder="0" allowfullscreen></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
                     @endforeach
                 </div>
             </div>

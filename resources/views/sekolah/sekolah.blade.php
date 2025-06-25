@@ -300,18 +300,26 @@
 @php
     use App\Models\sekolah;
 
-    $sekolah = sekolah::select('id', 'namaWilayah', 'namaSekolah', 'namaTitik', 'link')->get();
-    $groupedCctvs = $sekolah->groupBy('namaWilayah')->map(function ($wilayahGroup) {
+    $wilayahMapping = [
+        1 => "KAB BANTUL",
+        2 => "KAB SLEMAN",
+        3 => "KAB GUNUNG KIDUL",
+        4 => "KAB KULON PROGO",
+        5 => "KOTA YOGYAKARTA",
+    ];
+
+    $sekolah = sekolah::select('id', 'wilayah_id', 'namaSekolah', 'namaTitik', 'link')->get();
+    $groupedCctvs = $sekolah->groupBy('wilayah_id')->map(function ($wilayahGroup) {
         return $wilayahGroup->groupBy('namaSekolah');
     });
 
-    $sekolah = sekolah::select('id', 'namaWilayah', 'namaSekolah', 'namaTitik', 'link')
-        ->orderBy('namaWilayah', 'asc')
+    $sekolah = sekolah::select('id', 'wilayah_id', 'namaSekolah', 'namaTitik', 'link')
+        ->orderBy('wilayah_id', 'asc')
         ->orderBy('namaSekolah', 'asc')
         ->orderBy('namaTitik', 'asc')
         ->get();
 
-    $groupedCctvs = $sekolah->groupBy('namaWilayah')->map(function ($wilayahGroup) {
+    $groupedCctvs = $sekolah->groupBy('wilayah_id')->map(function ($wilayahGroup) {
         return $wilayahGroup->groupBy('namaSekolah');
     });
 @endphp
@@ -348,29 +356,29 @@
                         @foreach ($groupedCctvs as $wilayah => $sekolahGroup)
                             <div class="item" style="font-size: 12px">
                                 <a href="javascript:void(0);" class="sub-btn"
-                                    onclick="toggleDaerah('{{ Str::slug($wilayah) }}')">
-                                    <i></i> {{ $wilayah }}
-                                    <i id="icon-{{ Str::slug($wilayah) }}" class="fas fa-angle-right dropdown"
-                                        style="margin-top: 4px;"></i>
+                                    onclick="toggleDaerah('{{ Str::slug($wilayahMapping[$wilayah] ?? $wilayah) }}')">
+                                    <i></i> {{ $wilayahMapping[$wilayah] ?? 'Unknown Wilayah' }}
+                                    <i id="icon-{{ Str::slug($wilayahMapping[$wilayah] ?? $wilayah) }}"
+                                        class="fas fa-angle-right dropdown" style="margin-top: 4px;"></i>
                                 </a>
-                                <div id="{{ Str::slug($wilayah) }}" class="sub-menu">
+                                <div id="{{ Str::slug($wilayahMapping[$wilayah] ?? $wilayah) }}" class="sub-menu">
                                     @foreach ($sekolahGroup as $namaSekolah => $cctvGroup)
                                         <div class="item">
                                             <a href="javascript:void(0);" class="sub-btn"
-                                                onclick="toggleDaerah('{{ Str::slug($wilayah) . '-' . Str::slug($namaSekolah) }}')">
-                                                <i class="fas fa-eye icon-toggle" style="margin-right: 8px; margin-top: 4px;"
+                                                onclick="toggleDaerah('{{ Str::slug($wilayahMapping[$wilayah] ?? $wilayah) . '-' . Str::slug($namaSekolah) }}')">
+                                                <i class="fas fa-eye icon-toggle" style="margin-right: 8px; margin-top: 4px; "
                                                     onclick="event.stopPropagation(); toggleIcon(event, '{{ Str::slug($namaSekolah) }}')"></i>
                                                 {{ $namaSekolah }}
-                                                <i id="icon-{{ Str::slug($wilayah) . '-' . Str::slug($namaSekolah) }}"
+                                                <i id="icon-{{ Str::slug($wilayahMapping[$wilayah] ?? $wilayah) . '-' . Str::slug($namaSekolah) }}"
                                                     class="fas fa-angle-right dropdown" style="margin-top: 4px;"></i>
                                             </a>
-                                            <div id="{{ Str::slug($wilayah) . '-' . Str::slug($namaSekolah) }}"
+                                            <div id="{{ Str::slug($wilayahMapping[$wilayah] ?? $wilayah) . '-' . Str::slug($namaSekolah) }}"
                                                 class="sub-menu">
                                                 @foreach ($cctvGroup as $sekolah)
                                                     <label class="form-check d-flex align-items-center gap-2"
                                                         style="cursor: pointer;">
                                                         <input type="checkbox"
-                                                            style="margin-left: -5px; width: 10px; height: 10px; cursor: pointer;"
+                                                            style="margin-left: -5px; width: 10px; height: 10px; cursor: pointer; "
                                                             id="checkbox-{{ Str::slug($namaSekolah . '-' . $sekolah->namaTitik) }}"
                                                             data-sekolah="{{ Str::slug($namaSekolah) }}"
                                                             onclick="event.stopPropagation(); toggleCCTV('{{ Str::slug($namaSekolah . '-' . $sekolah->namaTitik) }}', this)">

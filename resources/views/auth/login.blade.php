@@ -15,6 +15,9 @@
     <link rel="shortcut icon" href="{{ asset('skydash/images/favicon.png') }}" />
     <!-- js-cookie library -->
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
 </head>
 
 <body>
@@ -35,9 +38,14 @@
                                     <input type="email" class="form-control form-control-lg" id="email"
                                         placeholder="Email" required>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group position-relative">
                                     <input type="password" class="form-control form-control-lg" id="password"
                                         placeholder="Password" required>
+                                    <button type="button"
+                                        class="btn btn-icon position-absolute top-50 end-0 translate-middle-y"
+                                        style="right: 10px; margin-top: -45px; box-shadow: none;" id="togglePassword">
+                                        <i class="fas fa-eye" id="eyeIcon"></i>
+                                    </button>
                                 </div>
                                 <div class="mt-3">
                                     <button type="submit"
@@ -68,6 +76,23 @@
 
     <!-- Custom Script -->
     <script src="{{ asset('skydash/js/login.js') }}"></script>
+
+    <script>
+        // Toggle password visibility
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordField = document.getElementById('password');
+        const eyeIcon = document.getElementById('eyeIcon');
+
+        togglePassword.addEventListener('click', function () {
+            // Check if password is currently hidden or visible
+            const type = passwordField.type === 'password' ? 'text' : 'password';
+            passwordField.type = type;
+
+            // Change eye icon based on visibility
+            eyeIcon.classList.toggle('fa-eye');
+            eyeIcon.classList.toggle('fa-eye-slash');
+        });
+    </script>
 
 </body>
 

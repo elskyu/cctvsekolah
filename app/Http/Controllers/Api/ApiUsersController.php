@@ -19,17 +19,17 @@ class ApiUsersController extends Controller
     {
         try {
             $users = User::all();
-    
+
             if ($users->isEmpty()) {
                 return new GlobalResource(false, 'Data Users tidak ditemukan', null);
             }
-    
+
             return new GlobalResource(true, 'List Data Users', $users);
         } catch (\Exception $e) {
             return new GlobalResource(false, 'Terjadi kesalahan: ' . $e->getMessage(), null);
         }
     }
-    
+
 
     /**
      * Store a newly created resource in storage.
@@ -47,14 +47,14 @@ class ApiUsersController extends Controller
             if ($validator->fails()) {
                 return new GlobalResource(false, 'Validasi gagal', $validator->errors());
             }
-            
+
             $users = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
-                'password' => Hash::make($request->password),
+                'password' => $request->password,
                 'phone' => $request->phone,
             ]);
-            
+
 
             return new GlobalResource(true, 'Data Users berhasil ditambahkan', $users);
         } catch (\Exception $e) {
@@ -99,7 +99,7 @@ class ApiUsersController extends Controller
                 'phone' => 'required|string',
             ]);
 
-            
+
 
             if ($validator->fails()) {
                 return new GlobalResource(false, 'Validasi gagal', $validator->errors());
