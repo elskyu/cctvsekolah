@@ -19,10 +19,10 @@
                             <table class="table" id="panorama">
                                 <thead>
                                     <tr>
-                                        <th>Nama Wilayah</th>
-                                        <th>Nama Titik</th>
-                                        <th>Status</th>
-                                        <th>Aksi</th>
+                                        <th class="text-center">Nama Wilayah</th>
+                                        <th class="text-center">Nama Titik</th>
+                                        <th class="text-center">Status</th>
+                                        <th class="text-center">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody id="panoramaTableBody">
@@ -54,7 +54,14 @@
                         <input type="hidden" id="id" name="id">
                         <div class="mb-3">
                             <label>Nama Wilayah</label>
-                            <input type="text" class="form-control" id="wilayah_id" name="wilayah_id" required>
+                            <select class="form-control" id="wilayah_id" name="wilayah_id" required>
+                                <option value="">Pilih Wilayah</option>
+                                <option value="1">KAB BANTUL</option>
+                                <option value="2">KAB SLEMAN</option>
+                                <option value="3">KAB GUNUNG KIDUL</option>
+                                <option value="4">KAB KULON PROGO</option>
+                                <option value="5">KOTA YOGYAKARTA</option>
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label>Nama Titik</label>

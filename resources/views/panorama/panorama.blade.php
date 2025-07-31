@@ -11,11 +11,29 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <title>Panorama</title>
     <script src="{{ asset('js/sekolah.js') }}"></script>
+    <script>
+        window.onload = function () {
+            fetch('/api/jumlah-wilayah')
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('jumlahWilayah').textContent = data.jumlah;
+                })
+                .catch(err => console.error(err));
+        };
+    </script>
 </head>
 
 @extends('layouts.user_type.auth')
 @php
     use App\Models\panorama;
+
+    $wilayahMapping = [
+        1 => "KAB BANTUL",
+        2 => "KAB SLEMAN",
+        3 => "KAB GUNUNG KIDUL",
+        4 => "KAB KULON PROGO",
+        5 => "KOTA YOGYAKARTA",
+    ];
 
     $panorama = panorama::select('id', 'wilayah_id', 'namaTitik', 'link')->get();
     $groupedCctvs = $panorama->groupBy('wilayah_id')->map(function ($wilayahGroup) {
@@ -59,12 +77,12 @@
                         @foreach ($groupedCctvs as $wilayah => $panoramaGroup)
                             <div class="item" style="font-size: 12px">
                                 <a href="javascript:void(0);" class="sub-btn"
-                                    onclick="toggleDaerah('{{ Str::slug($wilayah) }}')">
-                                    {{ $wilayah }}
-                                    <i id="icon-{{ Str::slug($wilayah) }}" class="fas fa-angle-right dropdown"
-                                        style="margin-top: 4px;"></i>
+                                    onclick="toggleDaerah('{{ Str::slug($wilayahMapping[$wilayah] ?? $wilayah) }}')">
+                                    {{ $wilayahMapping[$wilayah] ?? 'WILAYAH TIDAK DIKETAHUI' }}
+                                    <i id="icon-{{ Str::slug($wilayahMapping[$wilayah] ?? $wilayah) }}"
+                                        class="fas fa-angle-right dropdown" style="margin-top: 4px;"></i>
                                 </a>
-                                <div id="{{ Str::slug($wilayah) }}" class="sub-menu">
+                                <div id="{{ Str::slug($wilayahMapping[$wilayah] ?? $wilayah) }}" class="sub-menu">
                                     @foreach ($panoramaGroup as $panorama)
                                         <label class="form-check d-flex align-items-center gap-2" style="cursor: pointer;">
                                             <input style="margin-left: -5px; width: 10px; height: 10px; cursor: pointer;"
@@ -106,7 +124,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="card2 d-flex align-items-center justify-content-center">
-                            <p class="fw-bold mb-0">Jumlah Wilayah : <span id="regionCount"></span></p>
+                            <p class="fw-bold mb-0">Jumlah Wilayah : <span id="jumlahWilayah"></span></p>
                         </div>
                     </div>
                 </div>
@@ -134,7 +152,7 @@
                                 data-panorama="{{ Str::slug($panorama->namaTitik) }}" style="display: none;">
                                 <div class="card">
                                     <a style="font-size: 12pt; font-weight: bold;" class="card-title text-center mb-1">
-                                        {{ $panorama->wilayah_id }}
+                                        {{ $wilayahMapping[$panorama->wilayah_id] ?? 'Wilayah Tidak Diketahui' }}
                                     </a>
                                     <a style="font-size: 10pt; margin-top: -4px;" class="card-title text-center mb-3">
                                         {{ $singkatan }}

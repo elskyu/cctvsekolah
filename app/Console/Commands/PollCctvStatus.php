@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use App\Models\Sekolah;
 use App\Models\Panorama;
+use App\Models\CctvOffline;
 use Illuminate\Support\Facades\Log;
 
 class PollCctvStatus extends Command
@@ -20,12 +21,8 @@ class PollCctvStatus extends Command
 
     protected array $panoramaStreams = [
         'ViewBaronBarat',
-        // Tambahkan stream panorama lain di sini
     ];
 
-    /**
-     * Extract stream ID dari URL CCTV
-     */
     protected function extractStreamId(string $url): ?string
     {
         $query = [];
@@ -33,12 +30,8 @@ class PollCctvStatus extends Command
         return $query['id'] ?? null;
     }
 
-    /**
-     * Bangun daftar URL streaming - sekarang seragam untuk semua jenis CCTV
-     */
     protected function buildStreamUrls(string $streamId): array
     {
-        // Format URL yang sama untuk semua jenis CCTV
         return [
             "http://103.255.15.227:5080/live/{$streamId}/playlist.m3u8",
             "http://103.255.15.227:5080/hls/{$streamId}.m3u8",
@@ -47,23 +40,17 @@ class PollCctvStatus extends Command
         ];
     }
 
-    /**
-     * Timeout dinamis - sekarang lebih sederhana
-     */
     protected function getDynamicTimeout(string $streamId): int
     {
         return in_array($streamId, $this->longTimeoutStreams) ? 20 : 15;
     }
 
-    /**
-     * Metode pengecekan yang sekarang seragam untuk semua CCTV
-     */
     protected function isStreamPlayable(string $url, string $streamId): bool
     {
         try {
             $response = Http::timeout($this->getDynamicTimeout($streamId))
                 ->withHeaders([
-                    'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+                    'User-Agent' => 'Mozilla/5.0',
                     'Referer' => 'http://103.255.15.227:5080/',
                     'Accept' => '*/*',
                     'Connection' => 'keep-alive',
@@ -127,22 +114,43 @@ class PollCctvStatus extends Command
         return $votes >= 2;
     }
 
+    // ✅ Fungsi kirim notifikasi Telegram
+    protected function sendTelegramNotification($message)
+    {
+        $token = '7674130624:AAFcKVxe3U6jHbWo7Z3frag7fjgYN-wa02A';
+        $chatId = '1220753828';
+
+        try {
+            Http::post("https://api.telegram.org/bot{$token}/sendMessage", [
+                'chat_id' => $chatId,
+                'text' => $message,
+                'parse_mode' => 'HTML',
+            ]);
+        } catch (\Exception $e) {
+            Log::error("Gagal kirim Telegram: " . $e->getMessage());
+        }
+    }
+
     public function handle(): int
     {
-        $this->info("Mulai pengecekan CCTV sekolah");
+        // $this->info("▶️ Mulai pengecekan CCTV Panorama");
+        // $this->checkPanoramaStreams();
+
+        // $this->info("⏳ Delay 5 menit sebelum pengecekan sekolah...");
+        // sleep(100); // 5 menit
+
+        $this->info("▶️ Mulai pengecekan CCTV sekolah");
         $this->checkSekolahStreams();
 
-        $this->info("Mulai pengecekan CCTV panorama");
-        $this->checkPanoramaStreams();
-
-        $this->info("Pengecekan CCTV selesai.");
+        $this->info("✅ Semua pengecekan selesai.");
         return 0;
     }
+
 
     protected function checkSekolahStreams()
     {
         $totalCctvs = Sekolah::count();
-        $batchSize = 25;
+        $batchSize = 50;
         $processed = 0;
         $batchNumber = 0;
 
@@ -162,8 +170,32 @@ class PollCctvStatus extends Command
 
                 $possibleUrls = $this->buildStreamUrls($streamId);
                 $isOnline = $this->getStatusWithConfidence($streamId, $possibleUrls);
+                $newStatus = $isOnline ? 'online' : 'offline';
 
-                $cctv->status = $isOnline ? 'online' : 'offline';
+                if ($newStatus === 'offline') {
+                    $message = "🔴 <b>{$cctv->namaSekolah}</b> sedang <b>OFFLINE</b>\n🆔 {$streamId}\n⏰ " . now()->format('d M Y H:i');
+                    $this->sendTelegramNotification($message);
+                    sleep(1); // hindari rate-limit
+
+                    // ✅ Simpan ke tabel cctv_offline jika belum ada di hari ini
+                    $alreadyLogged = CctvOffline::where('link', $cctv->link)
+                        ->whereDate('date', today())
+                        ->exists();
+
+                    if (!$alreadyLogged) {
+                        CctvOffline::create([
+                            'namaSekolah' => $cctv->namaSekolah,
+                            'wilayah_id' => $cctv->wilayah_id,
+                            'namaTitik' => $cctv->namaTitik,
+                            'link' => $cctv->link,
+                            'last_seen' => $cctv->last_seen,
+                            'offline_since' => now(),
+                            'date' => today(),
+                        ]);
+                    }
+                }
+
+                $cctv->status = $newStatus;
                 $cctv->last_seen = $isOnline ? now() : null;
                 $cctv->save();
 
@@ -171,55 +203,54 @@ class PollCctvStatus extends Command
             }
 
             $batchProcessingTime = microtime(true) - $batchStartTime;
-            $remainingDelay = max(0, 3 - $batchProcessingTime); // delay 3 detik
-            if ($remainingDelay > 0) {
-                $this->info("⏳ Batch sekolah ke-{$batchNumber} selesai, delay {$remainingDelay}s sebelum batch berikutnya.");
-                usleep($remainingDelay * 1_000_000);
-            } else {
-                $this->info("✔️ Batch sekolah ke-{$batchNumber} selesai, lanjut tanpa delay.");
-            }
+            $targetDelay = 30; // detik
+
+            $this->info("🕒 Batch sekolah ke-{$batchNumber} diproses dalam {$batchProcessingTime}s");
+            $this->info("⏳ Delay {$targetDelay}s dimulai pada " . now()->format('H:i:s'));
+            usleep($targetDelay * 1_000_000);
+            $this->info("✅ Delay selesai pada " . now()->format('H:i:s'));
+
         });
     }
 
-    protected function checkPanoramaStreams()
-    {
-        $totalPanoramas = Panorama::count();
-        $batchSize = 10;
-        $processed = 0;
-        $batchNumber = 0;
+    // protected function checkPanoramaStreams()
+    // {
+    //     $this->info("▶️ Mulai proses pengecekan CCTV Panorama");
 
-        Panorama::chunk($batchSize, function ($panoramas) use (&$processed, $totalPanoramas, &$batchNumber) {
-            $batchNumber++;
-            $this->info("▶️ Mulai proses panorama batch ke-{$batchNumber}");
-            $batchStartTime = microtime(true);
+    //     $panoramas = Panorama::all();
+    //     $totalPanoramas = $panoramas->count();
+    //     $processed = 0;
 
-            foreach ($panoramas as $panorama) {
-                $processed++;
-                $streamId = $this->extractStreamId($panorama->link);
+    //     foreach ($panoramas as $panorama) {
+    //         $processed++;
+    //         $streamId = $this->extractStreamId($panorama->link);
 
-                if (!$streamId) {
-                    $this->error("❌ Panorama {$panorama->namaTitik}: Format URL tidak valid");
-                    continue;
-                }
+    //         if (!$streamId) {
+    //             $this->error("❌ {$panorama->namaTitik}: Format URL tidak valid");
+    //             continue;
+    //         }
 
-                $possibleUrls = $this->buildStreamUrls($streamId);
-                $isOnline = $this->getStatusWithConfidence($streamId, $possibleUrls);
+    //         $possibleUrls = $this->buildStreamUrls($streamId);
+    //         $isOnline = $this->getStatusWithConfidence($streamId, $possibleUrls);
+    //         $newStatus = $isOnline ? 'online' : 'offline';
 
-                $panorama->status_panorama = $isOnline ? 'online' : 'offline';
-                $panorama->last_seen_panorama = $isOnline ? now() : null;
-                $panorama->save();
+    //         // Jika offline, bisa tambahkan log atau kirim notifikasi (opsional)
+    //         if ($newStatus === 'offline') {
+    //             $message = "🔴 <b>{$panorama->namaTitik}</b> (PANORAMA) sedang <b>OFFLINE</b>\n🆔 {$streamId}\n⏰ " . now()->format('d M Y H:i');
+    //             $this->sendTelegramNotification($message);
+    //             sleep(1); // hindari rate-limit
 
-                $this->info(($isOnline ? '✅' : '❌') . " Panorama {$panorama->namaTitik} " . strtoupper($panorama->status_panorama) . " [{$processed}/{$totalPanoramas}]");
-            }
+    //             // Contoh: bisa juga simpan ke tabel panorama_offline jika diperlukan
+    //             // PanoramaOffline::create([...]);
+    //         }
 
-            $batchProcessingTime = microtime(true) - $batchStartTime;
-            $remainingDelay = max(0, 3 - $batchProcessingTime); // delay 3 detik
-            if ($remainingDelay > 0) {
-                $this->info("⏳ Batch panorama ke-{$batchNumber} selesai, delay {$remainingDelay}s sebelum batch berikutnya.");
-                usleep($remainingDelay * 1_000_000);
-            } else {
-                $this->info("✔️ Batch panorama ke-{$batchNumber} selesai, lanjut tanpa delay.");
-            }
-        });
-    }
+    //         $panorama->status_panorama = $newStatus;
+    //         $panorama->last_seen_panorama = $isOnline ? now() : null;
+    //         $panorama->save();
+
+    //         $this->info(($isOnline ? '✅' : '❌') . " {$panorama->namaTitik} " . strtoupper($newStatus) . " [{$processed}/{$totalPanoramas}]");
+    //     }
+
+    //     $this->info("✅ Pengecekan CCTV Panorama selesai.");
+    // }
 }

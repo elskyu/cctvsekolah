@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Resources\GlobalResource;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\sekolah;
+use App\Models\Sekolah;
+use App\Models\NamaSekolah;
 use Illuminate\Support\Facades\Validator;
 
 class ApiSekolahController extends Controller
@@ -28,7 +29,6 @@ class ApiSekolahController extends Controller
         }
     }
 
-
     /**
      * Store a newly created resource in storage.
      */
@@ -37,16 +37,33 @@ class ApiSekolahController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'wilayah_id' => 'required|string|max:255',
-                'namaSekolah' => 'required|string|max:255',
                 'namaTitik' => 'required|string|max:255',
+                'lokasi' => 'required|string|max:255',
                 'link' => 'required|url',
+                'nama_sekolah_id' => 'required|integer|exists:nama_sekolah,id',
             ]);
 
             if ($validator->fails()) {
                 return new GlobalResource(false, 'Validasi gagal', $validator->errors());
             }
 
-            $sekolah = sekolah::create($request->all());
+            // Ambil data sekolah dari relasi nama_sekolah
+            $namaSekolahModel = NamaSekolah::find($request->nama_sekolah_id);
+            if (!$namaSekolahModel) {
+                return new GlobalResource(false, 'Nama sekolah tidak ditemukan', null);
+            }
+
+            // Siapkan data dengan namaSekolah diisi dari relasi
+            $data = [
+                'wilayah_id' => $request->wilayah_id,
+                'nama_sekolah_id' => $request->nama_sekolah_id,
+                'namaSekolah' => $namaSekolahModel->nama,
+                'namaTitik' => $request->namaTitik,
+                'lokasi' => $request->lokasi,
+                'link' => $request->link,
+            ];
+
+            $sekolah = Sekolah::create($data);
 
             return new GlobalResource(true, 'Data sekolah berhasil ditambahkan', $sekolah);
         } catch (\Exception $e) {
@@ -86,9 +103,11 @@ class ApiSekolahController extends Controller
 
             $validator = Validator::make($request->all(), [
                 'wilayah_id' => 'required|string|max:255',
-                'namaSekolah' => 'required|string|max:255',
+                'namaSekolah' => 'string|max:255',
                 'namaTitik' => 'required|string|max:255',
+                'lokasi' => 'required|string|max:255',
                 'link' => 'required|url',
+                'nama_sekolah_id' => 'required|string|max:255',
             ]);
 
             if ($validator->fails()) {
@@ -122,4 +141,15 @@ class ApiSekolahController extends Controller
             return new GlobalResource(false, 'Terjadi kesalahan: ' . $e->getMessage(), null);
         }
     }
+
+    public function getNamaSekolah()
+    {
+        $sekolah = \App\Models\NamaSekolah::select('id', 'nama', 'lokasi', 'wilayah_id')->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $sekolah,
+        ]);
+    }
+
 }

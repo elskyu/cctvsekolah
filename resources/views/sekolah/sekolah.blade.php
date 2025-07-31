@@ -293,6 +293,43 @@
             document.getElementById('schoolCount').textContent = schools.size;
             document.getElementById('regionCount').textContent = regionCount;
         }
+
+        window.onload = function () {
+            fetch('/api/jumlah-wilayah')
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('jumlahWilayah').textContent = data.jumlah;
+                })
+                .catch(err => console.error(err));
+        };
+
+        function filterSidebar() {
+            const input = document.getElementById("searchSekolahSidebar");
+            const filter = input.value.toLowerCase();
+
+            const wilayahItems = document.querySelectorAll(".menu > .item");
+
+            wilayahItems.forEach((wilayahItem) => {
+                const sekolahItems = wilayahItem.querySelectorAll(".item-sekolah");
+                let adaYangCocok = false;
+
+                sekolahItems.forEach((sekolahItem) => {
+                    const namaSekolah = sekolahItem
+                        .querySelector("a")
+                        .innerText.toLowerCase();
+                    if (namaSekolah.includes(filter)) {
+                        sekolahItem.style.display = "";
+                        adaYangCocok = true;
+                    } else {
+                        sekolahItem.style.display = "none";
+                    }
+                });
+
+                // tampilkan wilayah jika ada sekolah yg cocok
+                wilayahItem.style.display = adaYangCocok ? "" : "none";
+            });
+        }
+
     </script>
 </head>
 
@@ -307,6 +344,7 @@
         4 => "KAB KULON PROGO",
         5 => "KOTA YOGYAKARTA",
     ];
+
 
     $sekolah = sekolah::select('id', 'wilayah_id', 'namaSekolah', 'namaTitik', 'link')->get();
     $groupedCctvs = $sekolah->groupBy('wilayah_id')->map(function ($wilayahGroup) {
@@ -339,46 +377,73 @@
             <!-- Sidebar (Kiri) -->
             <div id="sidebar" class="col-md-3">
                 <div class="side-bar">
+                    <div class="row g-3 align-items-center">
 
-                    <button class="btn-sidebar2" onclick="toggleSidebar()"
-                        style="position: fixed; top: 10px; left: 10px; z-index: 1001;">
-                        <i class="fas fa-bars"></i>
-                    </button>
+                        <!-- button sidebar -->
+                        <div class="col-auto">
+                            <button class="btn-sidebar2" onclick="toggleSidebar()"
+                                style="position: fixed; top: 20px; left: 10px; z-index: 1001;">
+                                <i class="fas fa-bars"></i>
+                            </button>
+                        </div>
 
-                    <!-- Tombol hide semua cctv yang tampil -->
-                    <button id="hide-all-cctv" class="btn-sidebar2" title="Sembunyikan Semua CCTV"
-                        onclick="hideAllCCTV()" style="position: fixed; top: 10px; right: 15px; z-index: 1001;">
-                        <i class="fas fa-eye-slash"></i>
-                    </button>
+                        <!-- searchbar di sidebar -->
+                        <div class="col-auto">
+                            <input type="text" class="form-control" id="searchSekolahSidebar"
+                                placeholder="Cari sekolah..." onkeyup="filterSidebar()"
+                                style="max-width: 90%; margin-left: 45px;">
+                        </div>
+
+                        <!-- button hideall cctv -->
+                        <div class="col-auto">
+                            <button id="hide-all-cctv" class="btn-sidebar2" title="Sembunyikan Semua CCTV"
+                                onclick="hideAllCCTV()" style="min-width: 40px; margin-top: 10px; right: 10px;">
+                                <i class="fas fa-eye-slash"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Spacer untuk menghindari overlap tombol dengan konten -->
+                    <div style="height: 10px;"></div>
+
+                    <!-- Pembatas -->
+                    <div style="border-top: 1px solid #ccc; margin: 5px 10px;"></div>
 
                     <!-- Menu navigasi -->
                     <div class="menu">
                         @foreach ($groupedCctvs as $wilayah => $sekolahGroup)
                             <div class="item" style="font-size: 12px">
                                 <a href="javascript:void(0);" class="sub-btn"
-                                    onclick="toggleDaerah('{{ Str::slug($wilayahMapping[$wilayah] ?? $wilayah) }}')">
-                                    <i></i> {{ $wilayahMapping[$wilayah] ?? 'Unknown Wilayah' }}
-                                    <i id="icon-{{ Str::slug($wilayahMapping[$wilayah] ?? $wilayah) }}"
-                                        class="fas fa-angle-right dropdown" style="margin-top: 4px;"></i>
+                                    onclick="toggleDaerah('{{ Str::slug($wilayah) }}')">
+                                    {{-- Tampilkan nama wilayah hasil mapping --}}
+                                    {{ $wilayahMapping[$wilayah] ?? $wilayah }}
+                                    <i id="icon-{{ Str::slug($wilayah) }}" class="fas fa-angle-right dropdown"
+                                        style="margin-top: 4px;"></i>
                                 </a>
-                                <div id="{{ Str::slug($wilayahMapping[$wilayah] ?? $wilayah) }}" class="sub-menu">
+
+                                <div id="{{ Str::slug($wilayah) }}" class="sub-menu">
                                     @foreach ($sekolahGroup as $namaSekolah => $cctvGroup)
-                                        <div class="item">
+                                        <div class="item item-sekolah">
                                             <a href="javascript:void(0);" class="sub-btn"
-                                                onclick="toggleDaerah('{{ Str::slug($wilayahMapping[$wilayah] ?? $wilayah) . '-' . Str::slug($namaSekolah) }}')">
-                                                <i class="fas fa-eye icon-toggle" style="margin-right: 8px; margin-top: 4px; "
+                                                onclick="toggleDaerah('{{ Str::slug($wilayah) . '-' . Str::slug($namaSekolah) }}')">
+                                                {{-- ICON MATA --}}
+                                                <i class="fas fa-eye icon-toggle" style="margin-right: 8px; margin-top: 4px;"
                                                     onclick="event.stopPropagation(); toggleIcon(event, '{{ Str::slug($namaSekolah) }}')"></i>
+
                                                 {{ $namaSekolah }}
-                                                <i id="icon-{{ Str::slug($wilayahMapping[$wilayah] ?? $wilayah) . '-' . Str::slug($namaSekolah) }}"
+
+                                                {{-- ANGLE ICON --}}
+                                                <i id="icon-{{ Str::slug($wilayah) . '-' . Str::slug($namaSekolah) }}"
                                                     class="fas fa-angle-right dropdown" style="margin-top: 4px;"></i>
                                             </a>
-                                            <div id="{{ Str::slug($wilayahMapping[$wilayah] ?? $wilayah) . '-' . Str::slug($namaSekolah) }}"
+
+                                            <div id="{{ Str::slug($wilayah) . '-' . Str::slug($namaSekolah) }}"
                                                 class="sub-menu">
                                                 @foreach ($cctvGroup as $sekolah)
                                                     <label class="form-check d-flex align-items-center gap-2"
                                                         style="cursor: pointer;">
                                                         <input type="checkbox"
-                                                            style="margin-left: -5px; width: 10px; height: 10px; cursor: pointer; "
+                                                            style="margin-left: -5px; width: 10px; height: 10px; cursor: pointer;"
                                                             id="checkbox-{{ Str::slug($namaSekolah . '-' . $sekolah->namaTitik) }}"
                                                             data-sekolah="{{ Str::slug($namaSekolah) }}"
                                                             onclick="event.stopPropagation(); toggleCCTV('{{ Str::slug($namaSekolah . '-' . $sekolah->namaTitik) }}', this)">
@@ -393,6 +458,7 @@
                                 </div>
                             </div>
                         @endforeach
+
                     </div>
                 </div>
             </div>
@@ -426,7 +492,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="card2 d-flex align-items-center justify-content-center">
-                            <p class="fw-bold mb-0">Jumlah Wilayah : <span id="regionCount"></span></p>
+                            <p class="fw-bold mb-0">Jumlah Wilayah : <span id="jumlahWilayah"></span></p>
                         </div>
                     </div>
                 </div>

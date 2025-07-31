@@ -53,6 +53,10 @@
                         <a class="nav-link {{ request()->is('panorama*') ? 'active' : '' }}"
                             href="{{ route('panorama.index') }}">CCTV Panorama</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is('sekolah*') ? 'active' : '' }}"
+                            href="{{ route('index5') }}">Rekap Sekolah</a>
+                    </li>
                 </ul>
             </div>
         </li>
