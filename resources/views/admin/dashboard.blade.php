@@ -87,14 +87,132 @@
                 </div>
             </div>
         </div>
-    </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Rekap CCTV Offline</h4>
+
+                        <form id="filterForm" class="d-flex flex-wrap align-items-center gap-2 mb-3">
+
+                            <!-- Range -->
+                            <div style="margin-right: 10px;">
+                                <select id="rangeFilter" class="form-control form-control-sm"
+                                    style="height: 2.1rem; min-width: 120px;">
+                                    <option value="daily">Harian</option>
+                                    <option value="weekly">Mingguan</option>
+                                    <option value="monthly">Bulanan</option>
+                                </select>
+                            </div>
+
+                            <!-- Wilayah -->
+                            <div style="margin-right: 10px;">
+                                <select id="wilayahFilter" class="form-control form-control-sm"
+                                    style="height: 2.1rem; min-width: 160px;">
+                                    <option value="">Semua Wilayah</option>
+                                    <option value="1">KAB BANTUL</option>
+                                    <option value="2">KAB SLEMAN</option>
+                                    <option value="3">KAB GUNUNG KIDUL</option>
+                                    <option value="4">KAB KULON PROGO</option>
+                                    <option value="5">KOTA YOGYAKARTA</option>
+                                </select>
+                            </div>
+
+                            <!-- Kategori -->
+                            <div style="margin-right: 10px;">
+                                <select id="kategoriFilter" class="form-control form-control-sm"
+                                    style="height: 2.1rem; min-width: 120px;">
+                                    <option value="">Semua Kategori</option>
+                                    <option value="SMA">SMA</option>
+                                    <option value="SMK">SMK</option>
+                                </select>
+                            </div>
+
+                            <!-- Search -->
+                            <div style="max-width: 250px; flex-grow: 1; margin-right: 10px;">
+                                <input id="searchInput" type="text" class="form-control form-control-sm"
+                                    placeholder="Cari nama sekolah..." style="height: 2.1rem;">
+                            </div>
+
+                            <!-- Export -->
+                            <div class="ms-auto">
+                                <a id="exportBtn" class="btn btn-danger btn-sm"
+                                    style="height: 2.1rem; line-height: 1.2rem;">
+                                    Export PDF
+                                </a>
+                            </div>
+
+                        </form>
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th class="text-center">Wilayah</th>
+                                        <th class="text-center">Sekolah</th>
+                                        <th class="text-center">Titik</th>
+                                        <th class="text-center">Last Seen</th>
+                                        <th class="text-center">Offline Sejak</th>
+                                        <th class="text-center">Tanggal</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="rekapTableBody">
+                                    <!-- Data dari JS akan masuk sini -->
+                                </tbody>
+                            </table>
+                            <!-- Pagination -->
+                            <!-- Pagination -->
+                            <div class="d-flex justify-content-center align-items-center mt-3">
+                                <ul id="pagination" class="pagination"></ul>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 @endsection
 
-@push('scripts')
-    <!-- Script tambahan cuaca -->
-    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
-    <script src="{{ asset('skydash/js/weather.js') }}"></script>
+    <script>
+        const rekapOffline = @json($rekapOffline);
+    </script>
 
-    <!-- Custom Script -->
-    <script src="{{ asset('skydash/js/greeting.js') }}"></script>
-@endpush
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+
+    @push('scripts')
+
+        <!-- Script tambahan cuaca -->
+        <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+        <script src="{{ asset('skydash/js/weather.js') }}"></script>
+
+        <!-- Custom Script -->
+        <script src="{{ asset('skydash/js/greeting.js') }}"></script>
+        <script src="{{ asset('skydash/js/rekap.js') }}"></script>
+
+        <script>
+            document.getElementById("exportBtn").addEventListener("click", function () {
+                // Ambil nilai dari filter
+                const range = document.getElementById("rangeFilter").value;
+                const wilayah = document.getElementById("wilayahFilter").value;
+                const kategori = document.getElementById("kategoriFilter").value;
+                const search = document.getElementById("searchInput").value;
+
+                // Bangun query string
+                const params = new URLSearchParams({
+                    range: range,
+                    wilayah: wilayah,
+                    kategori: kategori,
+                    search: search,
+                });
+
+                // Bangun URL export dan buka di tab baru
+                const exportUrl = `/export/cctv-offline?${params.toString()}`;
+                window.open(exportUrl, "_blank");
+            });
+        </script>
+
+
+
+    @endpush

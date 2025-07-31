@@ -5,6 +5,14 @@ const token = Cookies.get("token");
 //     window.location.href = '/login';
 // }
 
+const wilayahMapping = {
+    1: "KAB BANTUL",
+    2: "KAB SLEMAN",
+    3: "KAB GUNUNG KIDUL",
+    4: "KAB KULON PROGO",
+    5: "KOTA YOGYAKARTA",
+};
+
 // Modal: Tambah Data
 function openCreateModal() {
     $("#formPanorama")[0].reset(); // kosongkan form
@@ -47,40 +55,70 @@ let panoramaData = []; // global variable untuk nyimpen data asli
 let currentPage = 1;
 const itemsPerPage = 5;
 
-function renderTablePage(page) {
+function groupPanoramaData(data) {
+    const grouped = {};
+    data.forEach((item) => {
+        if (!grouped[item.wilayah_id]) {
+            grouped[item.wilayah_id] = [];
+        }
+        grouped[item.wilayah_id].push(item);
+    });
+
+    return grouped;
+}
+
+function renderTablePage(page = 1) {
     const tbody = document.getElementById("panoramaTableBody");
     tbody.innerHTML = "";
 
+    const grouped = groupPanoramaData(panoramaData);
+    const wilayahIds = Object.keys(grouped);
     const start = (page - 1) * itemsPerPage;
     const end = start + itemsPerPage;
-    const pageData = panoramaData.slice(start, end);
+    const paginatedWilayah = wilayahIds.slice(start, end);
 
-    pageData.forEach((item) => {
-        const row = document.createElement("tr");
+    paginatedWilayah.forEach((wilayah_id) => {
+        const wilayahNama = wilayahMapping[wilayah_id] || "Unknown";
+        const titikList = grouped[wilayah_id];
+        const rowspan = titikList.length;
 
-        row.innerHTML = `
-            <td>${item.wilayah_id}</td>
-            <td>${item.namaTitik}</td>
-            <td>${item.status}</td>
-            <td>
-                <div style="display: flex; gap: 5px;">
-                    <button class="btn btn-sm btn-primary" onclick='openEditModal(${JSON.stringify(
-                        item
-                    )})'>Edit</button>
-                    <button class="btn btn-sm btn-danger" onclick="deletepanorama(${
-                        item.id
-                    })">Delete</button>
-                </div>
-            </td>
-        `;
-        tbody.appendChild(row);
+        titikList.forEach((item, index) => {
+            const row = document.createElement("tr");
+            const statusClass =
+                item.status_panorama === "online"
+                    ? "text-success"
+                    : "text-danger";
+            const statusText =
+                item.status_panorama === "online" ? "Online" : "Offline";
+
+            row.innerHTML = `
+                ${
+                    index === 0
+                        ? `<td rowspan="${rowspan}" class="align-middle text-center fw-bold">${wilayahNama}</td>`
+                        : ""
+                }
+                <td class="text-center">${item.namaTitik}</td>
+                <td class="text-center ${statusClass}">${statusText}</td>
+                <td class="text-center">
+                    <div style="display: flex; gap: 0.3rem; justify-content: center;">
+                        <button class="btn btn-sm btn-primary" onclick='openEditModal(${JSON.stringify(
+                            item
+                        )})'>Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="deletepanorama(${
+                            item.id
+                        })">Delete</button>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
     });
 
-    renderPagination();
+    renderPagination(paginatedWilayah.length);
 }
 
-function renderPagination() {
-    const totalPages = Math.ceil(panoramaData.length / itemsPerPage);
+function renderPagination(totalItems) {
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
     const pagination = document.getElementById("pagination");
     pagination.innerHTML = "";
 
@@ -223,12 +261,15 @@ function renderFilteredTable(filteredData) {
     const start = (currentPage - 1) * itemsPerPage;
     const end = start + itemsPerPage;
     const pageData = filteredData.slice(start, end);
+    const statusClass =
+        item.status === "online" ? "text-success" : "text-danger";
 
     pageData.forEach((item) => {
         const row = document.createElement("tr");
         row.innerHTML = `
             <td>${item.wilayah_id}</td>
             <td>${item.namaTitik}</td>
+            <td class="text-center ${statusClass}">${item.status}</td>
             <td>
                 <div class="d-flex">
                     <button class="btn btn-sm btn-primary" onclick='openEditModal(${JSON.stringify(

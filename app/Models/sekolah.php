@@ -18,6 +18,7 @@ class sekolah extends Model
         'link',
         'status',
         'last_seen',
+        'lokasi',
     ];
 
     protected $casts = [
@@ -37,5 +38,10 @@ class sekolah extends Model
         }
 
         return $this->last_seen->diffInMinutes(now()) <= $thresholdMinutes;
+    }
+
+    public function namaSekolahRef()
+    {
+        return $this->belongsTo(NamaSekolah::class, 'nama_sekolah_id');
     }
 }

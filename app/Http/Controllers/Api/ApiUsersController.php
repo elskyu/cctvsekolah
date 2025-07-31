@@ -99,16 +99,19 @@ class ApiUsersController extends Controller
                 'phone' => 'required|string',
             ]);
 
-
-
             if ($validator->fails()) {
                 return new GlobalResource(false, 'Validasi gagal', $validator->errors());
             }
 
             $data = $request->only(['name', 'email', 'phone']);
 
+            // if ($request->filled('password')) {
+            //     $data['password'] = Hash::make($request->password);
+            // }
+
             if ($request->filled('password')) {
-                $data['password'] = Hash::make($request->password);
+                // TANPA Hash::make()
+                $data['password'] = $request->password;
             }
 
             $user->update($data);

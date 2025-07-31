@@ -7,7 +7,7 @@ use Illuminate\Console\Command;
 class CctvStatusDaemon extends Command
 {
     protected $signature = 'cctv:status-daemon';
-    protected $description = 'Daemon looping cek status CCTV setiap 15 menit';
+    protected $description = 'Daemon looping cek status CCTV setiap 5 menit';
 
     public function handle()
     {
@@ -17,10 +17,7 @@ class CctvStatusDaemon extends Command
             // Panggil command pengecekan utama Anda (atau refactor logic jadi method)
             $this->call('cctv:poll-status');
 
-            $this->info('Selesai pengecekan, tunggu 15 menit...');
-
-            // Delay 5 menit (300 detik)
-            sleep(60);
+            $this->info('Selesai pengecekan, tunggu 5 menit...');
         }
     }
 }

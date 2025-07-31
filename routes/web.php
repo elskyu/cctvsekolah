@@ -15,6 +15,8 @@ Route::get('/login', [sekolahController::class, 'login'])->name('login');
 
 Route::get('/cctv-sekolah', [sekolahController::class, 'index'])->name('sekolah.index');
 
+Route::get('/rekap-sekolah', [SekolahController::class, 'index5'])->name('index5');
+
 Route::get('/users', [sekolahController::class, 'index3'])->name('kelola.users');
 
 Route::get('/cctv-panorama', [sekolahController::class, 'index2'])->name('panorama.index');

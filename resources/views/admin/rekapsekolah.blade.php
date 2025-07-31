@@ -6,10 +6,10 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h4 class="card-title mb-0">CCTV Sekolah</h4>
-                            <!-- Tombol Tambah -->
+                            <h4 class="card-title mb-0">Rekap Data Sekolah</h4>
                             <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalForm"
                                 onclick="openCreateModal()">Tambah</button>
+
                         </div>
 
                         <!-- Search Input -->
@@ -45,21 +45,19 @@
                             </div>
                         </div>
 
+
                         <div class="table-responsive">
                             <table class="table" id="sekolah">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Nama Wilayah</th>
                                         <th class="text-center">Nama Sekolah</th>
-                                        <th class="text-center">Jumlah Cctv</th>
-                                        <th class="text-center">Titik Wilayah</th>
                                         <th class="text-center">Lokasi</th>
-                                        <th class="text-center">Status</th>
                                         <th class="text-center">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody id="sekolahTableBody">
-                                    {{-- Isi data --}}
+
                                 </tbody>
                             </table>
                             <nav>
@@ -97,16 +95,8 @@
                         </div>
                         <div class="mb-3">
                             <label>Nama Sekolah</label>
-                            <select id="sekolah_id" class="form-control">
-                                <option value="">Pilih Sekolah</option>
-                            </select>
-                            <input type="hidden" id="namaSekolah" name="namaSekolah">
-                        </div>
-
-                        <div class="mb-3">
-                            <label>Nama Titik</label>
-                            <input type="text" class="form-control" id="namaTitik" name="namaTitik"
-                                placeholder="Contoh: Gerbang Utama..." required>
+                            <input type="text" class="form-control" id="nama" name="nama"
+                                placeholder="Masukkan nama sekolah..." required>
                         </div>
                         <div class="mb-3">
                             <label>Lokasi</label>
@@ -125,11 +115,6 @@
                             </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label>Link CCTV</label>
-                            <input type="url" class="form-control" id="link" name="link"
-                                placeholder="Masukkan link stream http..." required>
-                        </div>
 
                     </div>
                     <div class="modal-footer">
@@ -143,7 +128,6 @@
 @endsection
 
 @push('scripts')
-
     <!-- Leaflet & Geocoder -->
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
@@ -151,13 +135,13 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
     <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 
-    <!-- Pass CSRF ke JS -->
+    <!-- CSRF Token -->
     <script>
         const csrfToken = "{{ csrf_token() }}";
     </script>
 
-    <!-- Custom Script -->
-    <script src="{{ asset('skydash/js/sekolah.js') }}"></script>
+    <!-- Custom JS -->
+    <script src="{{ asset('skydash/js/rekap_sekolah.js') }}"></script>
 
     <script>
         $('#modalForm').on('shown.bs.modal', function () {
@@ -168,6 +152,4 @@
             }
         });
     </script>
-
-
 @endpush
